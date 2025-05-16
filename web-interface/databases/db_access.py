@@ -43,16 +43,19 @@ class DbAccess:
         except Exception as e:
             self.conn = self.connection()
     
-    def fetch_temp(self)->None | list:
-        """Fetch temperature from database"""
+    def fetch_days(self)->None | list:
+        """Fetch days from database"""
         self.enforce_connection()
+        if self.conn is None:
+            return None
         with self.conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM sensor_data")
+            cursor.execute("SELECT DISTINCT day FROM sensor_data")
             rows = cursor.fetchall()
-            return rows
+        days = [row[0] for row in rows]
+        return days
 
 data: DbAccess = DbAccess()
-print(data.fetch_temp())
+print(data.fetch_days())
 
 
 
