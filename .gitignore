@@ -1,0 +1,3 @@
+raspi-data-base_sensors/database/.env
+raspi-data-base_sensors/truncate.sql
+web-interface/databases/.env
