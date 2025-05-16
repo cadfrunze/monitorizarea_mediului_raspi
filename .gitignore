@@ -1,3 +1,4 @@
 raspi-data-base_sensors/database/.env
 raspi-data-base_sensors/truncate.sql
 web-interface/databases/.env
+web-interface/databases/cadfrunze-raspi-firebase-adminsdk-fbsvc-c9ccd27771.json
