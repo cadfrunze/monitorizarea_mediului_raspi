@@ -22,25 +22,29 @@ class IpRaspi:
            
 
     def connect(self)-> db.Reference | None:
-        # incarca credentialele de la firebase
+        """
+        Incarca credentialele de la firebase
+        """
         try:
             # incarca credentialele de la firebase
             self.cred = credentials.Certificate(self.credentials)
         except Exception as e:
-            print(f"Error loading credentials: {e}")
-            return None
+            raise e
         # initializeaza firebase
         if not firebase_admin._apps:
             firebase_admin.initialize_app(self.cred, {
                 'databaseURL': self.url
             })
         # conecteaza la baza de date
-        
         return db.reference(f"/status/{self.endpoint}")
-    def get_ip(self)-> str:
+    
+    def get_ip(self)-> str | None:
+        """
+        Conecteaza la baza de date si obtine adresa IP de la Raspberry Pi
+        """
         ref = self.connect()
         if ref is None:
-            return "Eroare la conectarea la Firebase"
+            raise "Eroare la conectarea la Firebase"
         ip: str = ref.child("adresa").get()
         return ip
 
