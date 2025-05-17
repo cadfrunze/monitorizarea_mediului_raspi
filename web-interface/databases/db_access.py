@@ -19,12 +19,6 @@ class DbAccess:
         self.database: str = os.getenv("DB_NAME")
         self.conn: mariadb.Connection = self.connection()
 
-    def get_ip(self)->str:
-        """
-        Returneaza adresa IP a Raspberry Pi
-        """
-        return self.__ip
-
     def connection(self)-> None | mariadb.Connection:
         """Connect to database"""
         try:
@@ -56,7 +50,7 @@ class DbAccess:
             raise "Eroare la conectarea la baza de date"
         with self.conn.cursor() as cursor:
             cursor.execute("SELECT DISTINCT day FROM sensor_data")
-            rows = cursor.fetchall()
+            rows: list[tuple]  = cursor.fetchall()
         days: list[str] = [row[0] for row in rows]
         return days
     
@@ -67,7 +61,7 @@ class DbAccess:
             raise "Eroare la conectarea la baza de date"
         with self.conn.cursor() as cursor:
             cursor.execute("SELECT hour FROM sensor_data WHERE day = ?", (day,))
-            rows = cursor.fetchall()
+            rows: list[tuple]  = cursor.fetchall()
         hours: list[str] = [row[0] for row in rows]
         return hours
     
@@ -79,23 +73,17 @@ class DbAccess:
         all_data: dict = dict()
         with self.conn.cursor() as cursor:
             cursor.execute("SELECT temperature FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_temp = cursor.fetchall()
+            rows_temp: list[tuple] = cursor.fetchall()
             cursor.execute("SELECT humidity FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_hum = cursor.fetchall()
+            rows_hum: list[tuple]  = cursor.fetchall()
             cursor.execute("SELECT pressure FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_pres = cursor.fetchall()
+            rows_pres: list[tuple]  = cursor.fetchall()
         all_data["temperature"] = [row[0] for row in rows_temp]
         all_data["humidity"] = [row[0] for row in rows_hum]
         all_data["pressure"] = [row[0] for row in rows_pres]
         return all_data
 
-data: DbAccess = DbAccess()
-print(data.fetch_data(
-    "17-05-2025",
-    "01:29:59",
-    "17-05-2025",
-    "06:30:00"
-    ))
+
 
 
 
