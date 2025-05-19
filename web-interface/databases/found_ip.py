@@ -47,6 +47,16 @@ class IpRaspi:
             raise "Eroare la conectarea la Firebase"
         ip: str = ref.child("adresa").get()
         return ip
+    
+    def get_ssid(self)-> str | None:
+        """
+        Conecteaza la baza de date si obtine SSID-ul de la Raspberry Pi
+        """
+        ref = self.connect()
+        if ref is None:
+            raise "Eroare la conectarea la Firebase"
+        ssid: str = ref.child("retea").get()
+        return ssid
 
 
 

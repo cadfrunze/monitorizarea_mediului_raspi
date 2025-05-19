@@ -1,17 +1,19 @@
 import os
 from dotenv import load_dotenv
 import mariadb
-from found_ip import IpRaspi
+from databases.found_ip import IpRaspi
 
 
 class DbAccess:
     """
     Clasa DbAccess este responsabila pentru conectarea la baza de date MariaDB (Raspbery Pi) 
-    si obtinerea adresei IP de la Raspberry Pi din clasa IpRaspi (modul found_ip)
+
+    si obtinerea adresei IP/ssid de la Raspberry Pi din clasa IpRaspi (modul found_ip)
     """
     def __init__(self):
         ip_raspi: IpRaspi = IpRaspi()
-        self.__ip: str = ip_raspi.get_ip()
+        self.__ip: str = ip_raspi.get_ip() #private
+        self.__ssid = ip_raspi.get_ssid() #private
         # incarca virtual env de la .env file
         load_dotenv()
         self.user: str = os.getenv("USER_DB")
@@ -43,6 +45,14 @@ class DbAccess:
         except Exception as e:
             self.conn = self.connection()
     
+    def get_ip(self)->str:
+        """Returneaza adresa IP de la Raspberry Pi"""
+        return self.__ip
+    
+    def get_ssid(self)->str:
+        """Returneaza SSID-ul de la Raspberry Pi"""
+        return self.__ssid
+    
     def fetch_days(self)->None | list:
         """Citeste/extrageaza zilele din baza de date"""
         self.enforce_connection()
@@ -65,7 +75,7 @@ class DbAccess:
         hours: list[str] = [row[0] for row in rows]
         return hours
     
-    def fetch_data(self, day1: str, hour1: str, day2:str , hour2: str)->None | dict:
+    def fetch_data(self, day1: str, hour1: str, day2:str , hour2: str)->None | dict[list[str], list[str], list[str]]:
         """Citeste/extrageaza temp, umiditatea, presiunea aer din baza de date"""
         self.enforce_connection()
         if self.conn is None:
