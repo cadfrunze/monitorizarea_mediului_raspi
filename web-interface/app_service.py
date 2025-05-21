@@ -1,5 +1,6 @@
 from model.all_data import AllData
 from model.raspi import get_info_raspi, RaspiSsh
+import time
 
 
 
@@ -28,7 +29,8 @@ class AppService:
             count += 1
             if count == 3:
                 self.raspi_ssh.stop_script()
+            time.sleep(2)
 
 
 app: AppService = AppService() 
-print(app.run_script())
+app.run_script()
