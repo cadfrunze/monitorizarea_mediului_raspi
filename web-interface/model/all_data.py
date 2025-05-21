@@ -8,19 +8,19 @@ class AllData:
     def __init__(self):
         self.__db: DbAccess = DbAccess()
     
-    def days(self) -> list:
+    def days(self) -> list[str]:
         """
         Returneaza lista de zile din baza de date.
         """
         return self.__db.fetch_days()
     
-    def hours(self, day: str) -> list:
+    def hours(self, day: str) -> list[str]:
         """
         Returneaza lista de ore din baza de date.
         """
         return self.__db.fetch_hours(day)
     
-    def data_range(self, day1: str, hour1: str, day2:str , hour2: str) -> None | dict[list[str], list[str], list[str]]:
+    def data_range(self, day1: str, hour1: str, day2:str , hour2: str) -> dict[list[str], list[str], list[str]]:
         """
         Returneaza intervalul de date din baza de date.
         """
