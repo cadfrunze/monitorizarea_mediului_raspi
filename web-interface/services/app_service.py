@@ -26,5 +26,5 @@ class AppService:
             time.sleep(2)
 
 
-app: AppService = AppService() 
-app.run_script()
+# app: AppService = AppService() 
+# app.run_script()
