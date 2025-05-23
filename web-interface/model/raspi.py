@@ -56,7 +56,7 @@ class RaspiSsh:
         venv: str = "source venv/bin/activate && "
         command: str = f"cd {folder} && {venv} nohup python {script} > log.txt 2>&1 & echo $! > pid.txt"
         # print(command)
-        stdin, stdout, stderr = self.client.exec_command(command)
+        self.client.exec_command(command)
         # print(stdout.read().decode())
         # print(stderr.read().decode())
     
@@ -67,7 +67,7 @@ class RaspiSsh:
         if self.client is None:
             self.connect_raspi()
         command: str = f"cd {self.__path} && kill $(cat pid.txt) && rm pid.txt"
-        stdin, stdout, stderr = self.client.exec_command(command)
+        self.client.exec_command(command)
         # print(stdout.read().decode())
         # print(stderr.read().decode())
         self.client.close()

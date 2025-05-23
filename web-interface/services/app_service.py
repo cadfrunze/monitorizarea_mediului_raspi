@@ -26,5 +26,8 @@ class AppService:
             time.sleep(2)
 
 
-# app: AppService = AppService() 
-# app.run_script()
+    def get_days(self) -> list[str]:
+        """
+        Returneaza lista de zile din baza de date.
+        """
+        return self.__all_data.days()
