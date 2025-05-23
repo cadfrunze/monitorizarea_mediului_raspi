@@ -1,0 +1,32 @@
+ body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+    }
+
+.button-group {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap;         
+    gap: 10px;               
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+#istoric-container {
+    display: none;
+    margin-top: 30px;
+}
+select {
+    padding: 10px;
+    font-size: 16px;
+}

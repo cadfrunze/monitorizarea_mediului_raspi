@@ -14,7 +14,8 @@ def index()-> None:
     """
     Ruteaza la pagina principala
     """
-    return render_template('index.html')
+    zile: list[str] = app_service.get_days()
+    return render_template('index.html', zile=zile)
 
 
 
