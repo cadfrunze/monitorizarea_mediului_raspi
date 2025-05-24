@@ -5,6 +5,8 @@ import matplotlib
 matplotlib.use('Agg') # Fara incarcare interactiva a ferestrei
 import matplotlib.pyplot as plt
 import os
+from flask import current_app
+
 
 
 
@@ -47,7 +49,8 @@ class AppService:
         Returneaza intervalul de date din baza de date.
         """
         all_data: dict = self.__all_data.data_range(day1, hour1, day2, hour2)
-        fig, axs = plt.subplots(3, 1, figsize=(10, 10), sharex= True)
+        # print(all_data)
+        fig, axs = plt.subplots(3, 1, figsize=(len(all_data["hour"]), 5), sharex= True)
         fig.suptitle(f"Datele pentru intervalul din ziua {day1} ora {hour1} - pana la ziua {day2} ora {hour2}")
         # Grafic pentru temperatura
         axs[0].plot(all_data["hour"], all_data["temperature"], label="Temperatura", color="red")
@@ -72,7 +75,9 @@ class AppService:
         # axs[2].legend()
         fig.legend(loc='upper right')
         plt.tight_layout()
-        path: str = os.path.join(os.getcwd(), "static", "grafic_sensori.png")
-        plt.savefig(path, dpi=300)
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensori.png')
+        plt.savefig(static_path, dpi=300)
+        # print("Grafic salvat:", os.path.exists(path))
+        # print("Cale fișier:", path)
         plt.close(fig)
        

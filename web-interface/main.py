@@ -42,6 +42,7 @@ def afisare_grafic()-> None:
     ora1 = data['ora1']
     ziua2 = data['ziua2']
     ora2 = data['ora2']
+    # print(f"Ziua 1: {ziua1}, Ora 1: {ora1}, Ziua 2: {ziua2}, Ora 2: {ora2}")
     
     app_service.get_all_data(ziua1, ora1, ziua2, ora2)
     
