@@ -11,7 +11,7 @@
 
     <div class="button-group">
         <form action="/istoric" method="get">
-            <button type="submit">Istoric</button>
+            <button type="button" onclick="loadIstoric()">Istoric</button>
         </form>
 
         <form action="/ruleaza" method="post">
@@ -28,15 +28,21 @@
 </div>
 
     <div id="istoric-container">
-        <form method="get" action="/istoric">
-            <label for="zi">Selectează ziua:</label>
-            <select name="zi" id="zi">
-                {% for day in zile %}
-                    <option value="{{ day }}">{{ day }}</option>
-                {% endfor %}
-            </select>
+        <form>
+            <label for="ziua1">Selectează ziua de la data de:</label>
+            <select name="ziua1" id="ziua1" onchange="loadOre()"></select>
             <br><br>
-            <button type="submit">Vezi date</button>
+            <label for="ora1">Selecteaza de la ora</label>
+            <select name="ora1" id="ora1"></select>
+            <br><br>
+        </form>
+        <form>
+            <label for="ziua2">Selectează ziua pana la data de:</label>
+            <select name="ziua2" id="ziua2" onchange="loadOre()"></select>
+            <br><br>
+            <label for="ora2">Selecteaza pana la ora</label>
+            <select name="ora2" id="ora2" onchange="loadOre()"></select>
+            <br><br>
         </form>
     </div>
 

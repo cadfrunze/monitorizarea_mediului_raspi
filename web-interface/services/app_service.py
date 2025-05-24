@@ -31,3 +31,9 @@ class AppService:
         Returneaza lista de zile din baza de date.
         """
         return self.__all_data.days()
+    
+    def get_hours(self, day: str) -> list[str]:
+        """
+        Returneaza lista de ore pentru o zi data.
+        """
+        return self.__all_data.hours(day)

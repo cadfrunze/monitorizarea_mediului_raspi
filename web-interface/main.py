@@ -14,9 +14,23 @@ def index()-> None:
     """
     Ruteaza la pagina principala
     """
-    zile: list[str] = app_service.get_days()
-    return render_template('index.html', zile=zile)
+    return render_template('index.html')
 
+@app.route('/istoric', methods=['GET'])
+def istoric()-> None:
+    """
+    Ruteaza la pagina de istoric
+    """
+    zile: list[str] = app_service.get_days()
+    return jsonify(zile)
+
+@app.route('/ore/<zi>', methods=['GET'])
+def ore(zi: str)-> None:
+    """
+    Ruteaza la pagina de ore
+    """
+    ore: list[str] = app_service.get_hours(zi)
+    return jsonify(ore)
 
 
 if __name__ == '__main__':

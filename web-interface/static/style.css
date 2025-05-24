@@ -25,6 +25,7 @@
 #istoric-container {
     display: none;
     margin-top: 30px;
+    padding: 5px;
 }
 select {
     padding: 10px;
