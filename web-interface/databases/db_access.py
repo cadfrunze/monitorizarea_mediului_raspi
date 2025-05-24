@@ -75,7 +75,7 @@ class DbAccess:
         hours: list[str] = [row[0] for row in rows]
         return hours
     
-    def fetch_data(self, day1: str, hour1: str, day2:str , hour2: str)->None | dict[list[str], list[str], list[str]]:
+    def fetch_data(self, day1: str, hour1: str, day2:str , hour2: str)->None | dict[list[str], list[str], list[str], list[str]]:
         """Citeste/extrageaza temp, umiditatea, presiunea aer din baza de date"""
         self.enforce_connection()
         if self.conn is None:
@@ -88,9 +88,13 @@ class DbAccess:
             rows_hum: list[tuple]  = cursor.fetchall()
             cursor.execute("SELECT pressure FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
             rows_pres: list[tuple]  = cursor.fetchall()
+            cursor.execute("SELECT hour FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
+            rows_hour: list[tuple]  = cursor.fetchall()
+        
         all_data["temperature"] = [row[0] for row in rows_temp]
         all_data["humidity"] = [row[0] for row in rows_hum]
         all_data["pressure"] = [row[0] for row in rows_pres]
+        all_data["hour"] = [row[0] for row in rows_hour]
         return all_data
 
 

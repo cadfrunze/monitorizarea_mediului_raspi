@@ -20,7 +20,7 @@ class AllData:
         """
         return self.__db.fetch_hours(day)
     
-    def data_range(self, day1: str, hour1: str, day2:str , hour2: str) -> dict[list[str], list[str], list[str]]:
+    def data_range(self, day1: str, hour1: str, day2:str , hour2: str) -> dict[list[str], list[str], list[str], list[str]]:
         """
         Returneaza intervalul de date din baza de date.
         """

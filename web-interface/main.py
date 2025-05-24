@@ -32,6 +32,27 @@ def ore(zi: str)-> None:
     ore: list[str] = app_service.get_hours(zi)
     return jsonify(ore)
 
+@app.route('/afisare-grafic', methods=['POST'])
+def afisare_grafic()-> None:
+    """
+    Ruteaza la pagina de afisare a graficului
+    """
+    data = request.get_json()
+    ziua1 = data['ziua1']
+    ora1 = data['ora1']
+    ziua2 = data['ziua2']
+    ora2 = data['ora2']
+    
+    app_service.get_all_data(ziua1, ora1, ziua2, ora2)
+    
+    return jsonify(
+        {
+            "status": "success",
+            "message": "Graficul a fost generat cu succes.",
+            "img": "/static/grafic_sensori.png"
+        }
+    )
+
 
 if __name__ == '__main__':
     """

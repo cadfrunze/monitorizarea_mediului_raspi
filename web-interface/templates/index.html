@@ -15,11 +15,11 @@
         </form>
 
         <form action="/ruleaza" method="post">
-            <button type="submit">Rulează script</button>
+            <button type="submit">Ruleaza script</button>
         </form>
 
         <form action="/adresa" method="get">
-            <button type="submit">Adresă web</button>
+            <button type="submit">Adresa web</button>
         </form>
 
         <form action="/router" method="get">
@@ -28,23 +28,28 @@
 </div>
 
     <div id="istoric-container">
-        <form>
-            <label for="ziua1">Selectează ziua de la data de:</label>
+        <div class="istoric-row">
+            <label for="ziua1">Ziua de la:</label>
             <select name="ziua1" id="ziua1" onchange="loadOre()"></select>
-            <br><br>
-            <label for="ora1">Selecteaza de la ora</label>
+
+            <label for="ora1">Ora de la:</label>
             <select name="ora1" id="ora1"></select>
-            <br><br>
-        </form>
-        <form>
-            <label for="ziua2">Selectează ziua pana la data de:</label>
+        </div>
+
+        <div class="istoric-row">
+            <label for="ziua2">Până la ziua:</label>
             <select name="ziua2" id="ziua2" onchange="loadOre()"></select>
-            <br><br>
-            <label for="ora2">Selecteaza pana la ora</label>
-            <select name="ora2" id="ora2" onchange="loadOre()"></select>
-            <br><br>
-        </form>
+
+            <label for="ora2">Până la ora:</label>
+            <select name="ora2" id="ora2"></select>
+        </div>
+        <button type="submit" onclick="afisareGrafic()">Afiseaza Grafic</button>
+        <div id="grafic-wrapper">
+            <img id="grafic-img" src="" alt="Graficul senzorilor">
+        </div>
+        
     </div>
+    
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     </body>

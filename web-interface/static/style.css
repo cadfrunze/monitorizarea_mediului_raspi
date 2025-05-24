@@ -10,7 +10,7 @@
     flex-wrap: wrap;         
     gap: 10px;               
 }
-.button {
+button {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -22,12 +22,29 @@
     margin: 4px 2px;
     cursor: pointer;
 }
-#istoric-container {
-    display: none;
-    margin-top: 30px;
-    padding: 5px;
-}
+
 select {
     padding: 10px;
     font-size: 16px;
+}
+#istoric-container {
+    display: none;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.istoric-row {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#grafic-wrapper{
+    margin-top: 30px;
+}
+#grafic-img{
+    max-width: 80%; 
+    display: none;
 }
