@@ -2,7 +2,8 @@ from model.all_data import AllData
 from model.raspi import RaspiSsh
 import time
 import matplotlib
-matplotlib.use('Agg') # Fara incarcare interactiva a ferestrei
+matplotlib.use('Agg') # Fara incarcare interactiva a ferestrei GUI tkinter
+# pentru a evita erorile de import in medii fara GUI
 import matplotlib.pyplot as plt
 import os
 from flask import current_app
