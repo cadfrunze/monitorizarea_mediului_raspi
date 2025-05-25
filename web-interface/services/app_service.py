@@ -49,32 +49,40 @@ class AppService:
         Returneaza intervalul de date din baza de date.
         """
         all_data: dict = self.__all_data.data_range(day1, hour1, day2, hour2)
+        inaltime: int  = 0
         # print(all_data)
-        fig, axs = plt.subplots(3, 1, figsize=(len(all_data["hour"]), 5), sharex= True)
-        fig.suptitle(f"Datele pentru intervalul din ziua {day1} ora {hour1} - pana la ziua {day2} ora {hour2}")
+        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(all_data["hour"]) * 0.8, 30)), 8), sharex= True)
+        
         # Grafic pentru temperatura
         axs[0].plot(all_data["hour"], all_data["temperature"], label="Temperatura", color="red")
         axs[0].set_ylabel("Temperatura (°C)")
         axs[0].set_xlabel("Ora")
         axs[0].set_title("Grafic temperatura")
         axs[0].grid(True)
-        # axs[0].legend()
+        axs[0].legend()
         # Grafic pentru umiditate
         axs[1].plot(all_data["hour"], all_data["humidity"], label="Umiditate", color="blue")
         axs[1].set_ylabel("Umiditate (%)")
         axs[1].set_xlabel("Ora")
         axs[1].set_title("Grafic umiditate")
         axs[1].grid(True)
-        # axs[1].legend()
+        axs[1].legend()
         # Grafic pentru presiune
         axs[2].plot(all_data["hour"], all_data["pressure"], label="Presiune", color="green")
         axs[2].set_ylabel("Presiune (hPa)")
         axs[2].set_xlabel("Ora")
         axs[2].set_title("Grafic presiune")
         axs[2].grid(True)
-        # axs[2].legend()
-        fig.legend(loc='upper right')
-        plt.tight_layout()
+        axs[2].legend()
+        # fig.legend(loc='upper right')
+        
+        plt.tight_layout(rect=[0, 0, 1, 0.90])
+        fig.suptitle(
+            t=f"{day1} ora {hour1} - {day2} ora {hour2}",
+            fontsize=16, 
+            fontweight='bold', 
+            y=1,
+            )
         static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensori.png')
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
