@@ -11,12 +11,10 @@
 
     <div class="button-group">
         <form action="/istoric" method="get">
-            <button type="button" onclick="loadIstoric()">Istoric</button>
+            <button type="button" onclick="loadIstoric()">Afiseaza Grafic (baza de date)</button>
         </form>
 
-        <form action="/ruleaza" method="post">
-            <button type="submit">Ruleaza script</button>
-        </form>
+        <button type="button" onclick="loadScript()">Ruleaza script Raspberry Pi</button>
 
         <form action="/adresa" method="get">
             <button type="submit">Adresa web</button>
@@ -45,10 +43,19 @@
         </div>
         <button type="submit" onclick="afisareGrafic()">Afiseaza Grafic</button>
         <div id="grafic-wrapper">
-            <img id="grafic-img" src="" alt="Graficul senzorilor">
+            <img id="grafic-img" src="" alt="Graficul baza de date">
         </div>
         
     </div>
+
+    <div id="script-container">
+        <button type="submit" onclick="startScript()"> Start Script</button>
+        <button type="submit" id="but-stop-script" onclick="stopScript()"> Stop Script</button>
+        <div id="grafic-wrapper">
+            <img id="senzori-img" src="" alt="Graficul senzorilor">
+        </div>
+    </div>
+
     
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>

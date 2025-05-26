@@ -1,13 +1,14 @@
 from services.app_service import AppService
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for
 
 """
 Scriptul principal al aplicatiei Flask
 Acesta contine rutele si logica de baza a aplicatiei.
 """
 
-app_service: AppService = AppService()
+
 app : Flask = Flask(__name__)
+app_service: AppService = AppService(app)
 
 @app.route('/')
 def index()-> None:
@@ -51,6 +52,34 @@ def afisare_grafic()-> None:
             "status": "success",
             "message": "Graficul a fost generat cu succes.",
             "img": "/static/grafic_sensori.png"
+        }
+    )
+
+
+@app.route('/start-script', methods=['POST'])
+def start_script()-> None:
+    """
+    Ruteaza la pagina de rulare a scriptului
+    """
+    try:
+        app_service.start_script()
+        return jsonify({
+            "status": "success",
+            "message": "Script pornit",
+            "img": url_for('static', filename='grafic_raspi.png')
+        })
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+@app.route('/stop-script', methods=['POST'])
+def stop_script()-> None:
+    """
+    Ruteaza la pagina de oprire a scriptului
+    """
+    app_service.stop_script()
+    return jsonify(
+        {
+            "status": "success",
+            "message": "Scriptul a fost oprit cu succes."
         }
     )
 

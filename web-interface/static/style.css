@@ -48,3 +48,13 @@ select {
     max-width: 80%; 
     display: none;
 }
+
+#script-container {
+    display: none;
+    margin-top: 30px;
+    text-align: center;
+}
+
+#but-stop-script {
+    background-color: #f44336; /* Red */
+}

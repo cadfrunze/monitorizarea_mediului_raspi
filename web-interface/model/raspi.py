@@ -2,6 +2,7 @@ from databases.db_access import DbAccess
 from dotenv import load_dotenv
 import os
 import paramiko
+import ast
 
 
 
@@ -44,31 +45,39 @@ class RaspiSsh:
         else: 
             return client
     
-    def run_script(self) -> None:
+    def run_script(self) -> dict | None:
         """
         Ruleaza scriptul de pe Raspberry Pi pentru a citi datele de la senzori
         """
-        if self.client is None:
-            self.connect_raspi()
-        # print(self.__path)
+        if self.client is None or not self.client.get_transport() or not self.client.get_transport().is_active():
+            self.client = self.connect_raspi()
+            if self.client is None:
+                raise ConnectionError("lipa conex ssh")
+
         folder: str = self.__path
         script: str = "main.py"
-        venv: str = "source venv/bin/activate && "
-        command: str = f"cd {folder} && {venv} nohup python {script} > log.txt 2>&1 & echo $! > pid.txt"
-        # print(command)
-        self.client.exec_command(command)
-        # print(stdout.read().decode())
-        # print(stderr.read().decode())
-    
-    def stop_script(self) -> None:
-        """
-        Opreste scriptul de pe Raspberry Pi
-        """
-        if self.client is None:
-            self.connect_raspi()
-        command: str = f"cd {self.__path} && kill $(cat pid.txt) && rm pid.txt"
-        self.client.exec_command(command)
-        # print(stdout.read().decode())
-        # print(stderr.read().decode())
+        venv: str = "source venv/bin/activate"
+        command: str = f"cd {folder} && {venv} && python {script}"
+        stdin, stdout, stderr = self.client.exec_command(command)
+        output: str = stdout.read().decode().strip()
         self.client.close()
+        try:
+            output_dict: dict = ast.literal_eval(output)
+        except (SyntaxError, ValueError) as e:
+            raise e
+        else:
+            self.client.close()
+            return output_dict
+    
+    # def stop_script(self) -> None:
+    #     """
+    #     Opreste scriptul de pe Raspberry Pi
+    #     """
+    #     if self.client is None:
+    #         self.connect_raspi()
+    #     command: str = f"cd {self.__path} && kill $(cat pid.txt) && rm pid.txt"
+    #     self.client.exec_command(command)
+    #     # print(stdout.read().decode())
+    #     # print(stderr.read().decode())
+    #     self.client.close()
         

@@ -2,12 +2,14 @@
 //             const container = document.getElementById("istoric-container");
 //             container.style.display = container.style.display === "none" ? "block" : "none";
 //         }
+const istoric_container = document.getElementById("istoric-container");
+const script_container = document.getElementById("script-container");
 
 function loadIstoric() {
     fetch('/istoric')
         .then(response => response.json())
         .then(zile => {
-            const container = document.getElementById("istoric-container");
+            
             const select = document.getElementById("ziua1");
             const select2 = document.getElementById("ziua2");
             // curăță opțiunile existente
@@ -27,7 +29,8 @@ function loadIstoric() {
             });
 
             // afișează containerul
-            container.style.display = "block";
+            istoric_container.style.display = "block";
+            script_container.style.display = "none"; // ascunde script container
         })
         .catch(error => console.error("Eroare la preluarea zilelor:", error));
 }
@@ -41,8 +44,8 @@ function loadOre() {
     const oraSelect2 = document.getElementById("ora2");
     oraSelect2.innerHTML = "<option>Se incarca...</option>";
 
-    // Dacă ziua1 este selectată, interogheaza serverul pentru orele disponibile
-    // și adaugă opțiunile în selectul corespunzător
+    // Daca ziua1 este selectata, interogheaza serverul pentru orele disponibile
+
     if (ziua1) {
         fetch(`/ore/${encodeURIComponent(ziua1)}`)
             .then(response => {
@@ -50,7 +53,7 @@ function loadOre() {
                 return response.json();
             })
             .then(ore => {
-                oraSelect1.innerHTML = ""; // curăță complet
+                oraSelect1.innerHTML = ""; // curata complet
                 ore.forEach(ora => {
                     const opt = document.createElement("option");
                     opt.value = ora;
@@ -120,6 +123,50 @@ function afisareGrafic() {
     .catch(error => {
         console.error('Eroare la trimiterea datelor:', error);
         alert('A aparut o eroare.');
+    });
+}
+
+function loadScript() {
+    
+    script_container.style.display = "block";
+    istoric_container.style.display = "none"; // ascunde istoric container 
+}
+
+function startScript(){
+    fetch('/start-script', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            //alert(data.message);
+            const img_senzor = document.getElementById("senzori-img");
+            img_senzor.src = data.img + '?t=' + new Date().getTime(); // timestamp pt cache
+            img_senzor.style.display = "block"; // afisare img
+        } else {alert("Eroare: " + data.message);}
+})  
+    .catch(error => {
+        console.error('Eroare la trimiterea datelor:', error);
+        alert('A aparut o eroare la pornirea scriptului.');
+    });
+}
+    
+
+function stopScript() {
+    fetch('/stop-script', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert("Script oprit cu succes.");
+        } else {
+            alert("Eroare la oprirea scriptului: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Eroare la oprirea scriptului:', error);
+        alert('A aparut o eroare la oprirea scriptului.');
     });
 }
 
