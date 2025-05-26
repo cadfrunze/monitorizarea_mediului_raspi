@@ -44,10 +44,7 @@ select {
 #grafic-wrapper{
     margin-top: 30px;
 }
-#grafic-img{
-    max-width: 80%; 
-    display: none;
-}
+
 
 #script-container {
     display: none;
@@ -57,4 +54,12 @@ select {
 
 #but-stop-script {
     background-color: #f44336; /* Red */
+}
+
+#senzori-img, #grafic-img {
+
+    max-width: 60%;
+    width: fit-content;
+
+    display: none;
 }

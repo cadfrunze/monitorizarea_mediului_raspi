@@ -1,5 +1,6 @@
 from services.app_service import AppService
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request, jsonify, url_for, current_app
+import os
 
 """
 Scriptul principal al aplicatiei Flask
@@ -51,25 +52,25 @@ def afisare_grafic()-> None:
         {
             "status": "success",
             "message": "Graficul a fost generat cu succes.",
-            "img": "/static/grafic_sensori.png"
+            'img': url_for('static', filename="/grafic_istoric/grafic_sensori.png")
         }
     )
 
 
 @app.route('/start-script', methods=['POST'])
 def start_script()-> None:
-    """
-    Ruteaza la pagina de rulare a scriptului
-    """
     try:
-        app_service.start_script()
+        filename = 'grafic_raspi.png'
+        os.path.join(current_app.root_path, 'static', 'grafic_sensors', filename)
+        app_service.start_script()  
+
         return jsonify({
             "status": "success",
-            "message": "Script pornit",
-            "img": url_for('static', filename='grafic_raspi.png')
+            "img": url_for('static', filename=f'grafic_sensors/{filename}')
         })
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
+    
 @app.route('/stop-script', methods=['POST'])
 def stop_script()-> None:
     """

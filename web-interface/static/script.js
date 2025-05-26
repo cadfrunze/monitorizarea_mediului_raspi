@@ -4,6 +4,14 @@
 //         }
 const istoric_container = document.getElementById("istoric-container");
 const script_container = document.getElementById("script-container");
+const img_senzor = document.getElementById("senzori-img");
+const img = document.getElementById("grafic-img");
+let intervalId = null;
+
+
+
+
+
 
 function loadIstoric() {
     fetch('/istoric')
@@ -31,6 +39,9 @@ function loadIstoric() {
             // afișează containerul
             istoric_container.style.display = "block";
             script_container.style.display = "none"; // ascunde script container
+            img_senzor.style.display = "none";
+            img.style.display = "none";
+            
         })
         .catch(error => console.error("Eroare la preluarea zilelor:", error));
 }
@@ -112,9 +123,10 @@ function afisareGrafic() {
     .then(data => {
         if (data.status === "success") {
             alert(data.message);
-            const img = document.getElementById("grafic-img");
+            
             img.src = data.img + '?t=' + new Date().getTime(); // timestamp pt cache
             img.style.display = "block"; // afisare img
+            img_senzor.style.display = "none"; // ascunde imaginea senzorului
         }
         else {
             alert("Nu s-a putut genera graficul: " + data.message);
@@ -129,20 +141,22 @@ function afisareGrafic() {
 function loadScript() {
     
     script_container.style.display = "block";
-    istoric_container.style.display = "none"; // ascunde istoric container 
+    istoric_container.style.display = "none";
+    img_senzor.style.display = "none";
+    img.style.display = "none"; 
 }
 
-function startScript(){
-    fetch('/start-script', {
+async function startScript(){
+    await fetch('/start-script', {
         method: 'POST'
     })
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
-            //alert(data.message);
-            const img_senzor = document.getElementById("senzori-img");
-            img_senzor.src = data.img + '?t=' + new Date().getTime(); // timestamp pt cache
-            img_senzor.style.display = "block"; // afisare img
+            if (!intervalId) {
+                    intervalId = setInterval(actualizeazaGrafic, 3000);
+                }
+        
         } else {alert("Eroare: " + data.message);}
 })  
     .catch(error => {
@@ -150,7 +164,13 @@ function startScript(){
         alert('A aparut o eroare la pornirea scriptului.');
     });
 }
-    
+
+function actualizeazaGrafic() {
+    img_senzor.style.display = "block"; // afișează imaginea senzorului
+    const timestamp = new Date().getTime(); // forțează browserul să reîncarce
+    img_senzor.src = `/static/grafic_sensors/grafic_raspi.png?t=${timestamp}`;
+}
+
 
 function stopScript() {
     fetch('/stop-script', {
@@ -159,6 +179,8 @@ function stopScript() {
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
+            clearInterval(intervalId);
+            intervalId = null;
             alert("Script oprit cu succes.");
         } else {
             alert("Eroare la oprirea scriptului: " + data.message);

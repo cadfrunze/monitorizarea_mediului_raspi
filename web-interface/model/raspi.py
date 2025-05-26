@@ -69,15 +69,5 @@ class RaspiSsh:
             self.client.close()
             return output_dict
     
-    # def stop_script(self) -> None:
-    #     """
-    #     Opreste scriptul de pe Raspberry Pi
-    #     """
-    #     if self.client is None:
-    #         self.connect_raspi()
-    #     command: str = f"cd {self.__path} && kill $(cat pid.txt) && rm pid.txt"
-    #     self.client.exec_command(command)
-    #     # print(stdout.read().decode())
-    #     # print(stderr.read().decode())
-    #     self.client.close()
+
         

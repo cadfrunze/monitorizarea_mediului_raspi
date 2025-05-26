@@ -12,6 +12,7 @@ import threading #pt a rula scriptul in background
 
 
 
+
 class AppService:
     """
     Clasa AppService este responsabila pentru gestionarea/cerintele aplicatiei.
@@ -27,6 +28,7 @@ class AppService:
         self.list_pres: list[float] = list()
         self.thread: threading.Thread | None = None
         self.stop_event: threading.Event = threading.Event()
+
 
     def start_script(self) -> None:
         """
@@ -44,6 +46,10 @@ class AppService:
         self.running = False
         if self.thread is not None:
             self.thread.join()
+        self.list_hours.clear()
+        self.list_temp.clear()
+        self.list_hum.clear()
+        self.list_pres.clear()
     
     
     def run_script_raspi(self) -> None:
@@ -54,6 +60,7 @@ class AppService:
             while self.running:
                 self.get_data_raspi()
                 time.sleep(2)
+        
 
 
     def get_days(self) -> list[str]:
@@ -74,7 +81,7 @@ class AppService:
         """
         all_data: dict = self.__data_raspi.data_range(day1, hour1, day2, hour2)
         # print(data_raspi)
-        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(all_data["hour"]) * 0.8, 30)), 8), sharex= True)
+        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(all_data["hour"]) * 0.8, 30)), 8))
         
         # Grafic pentru temperatura
         axs[0].plot(all_data["hour"], all_data["temperature"], label="Temperatura", color="red")
@@ -106,13 +113,13 @@ class AppService:
             fontweight='bold', 
             y=1,
             )
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensori.png')
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric' , 'grafic_sensori.png')
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)
         plt.close(fig)
     
-    def get_data_raspi(self) -> dict | None:
+    def get_data_raspi(self) -> None:
         """
         Returneaza datele de la Raspberry Pi. Afiseaza un grafic cu datele de la senzori.
         """
@@ -124,7 +131,7 @@ class AppService:
         self.list_temp.append(data_raspi["temperature"])
         self.list_hum.append(data_raspi["humidity"])
         self.list_pres.append(data_raspi["pressure"])
-        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(self.list_hours) * 0.8, 30)), 8), sharex= True)
+        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(self.list_hours) * 0.8, 30)), 8))
         
         # Grafic pentru temperatura
         axs[0].plot(self.list_hours, self.list_temp, label="Temperatura", color="red")
@@ -150,9 +157,10 @@ class AppService:
         # fig.legend(loc='upper right')
         
         plt.tight_layout(rect=[0, 0, 1, 0.90])
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_raspi.png')
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)
         plt.close(fig)
+        
        
