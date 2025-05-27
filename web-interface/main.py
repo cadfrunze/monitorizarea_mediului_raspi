@@ -10,12 +10,17 @@ Acesta contine rutele si logica de baza a aplicatiei.
 
 app : Flask = Flask(__name__)
 app_service: AppService = AppService(app)
+count_user: int = 0
 
 @app.route('/')
 def index()-> None:
     """
     Ruteaza la pagina principala
     """
+    global count_user
+    count_user += 1
+    app_service.count_user = count_user
+    app_service.delete_all_graphics()  # Sterge toate graficele anterioare la fiecare accesare a paginii principale
     return render_template('index.html')
 
 @app.route('/istoric', methods=['GET'])
@@ -39,6 +44,7 @@ def afisare_grafic()-> None:
     """
     Ruteaza la pagina de afisare a graficului
     """
+    app_service.delete_all_graphics()  # Sterge toate graficele anterioare la fiecare accesare a paginii de afisare a graficului
     data = request.get_json()
     ziua1 = data['ziua1']
     ora1 = data['ora1']
@@ -52,21 +58,26 @@ def afisare_grafic()-> None:
         {
             "status": "success",
             "message": "Graficul a fost generat cu succes.",
-            'img': url_for('static', filename="/grafic_istoric/grafic_sensori.png")
+            'img': url_for('static', filename=f"/grafic_istoric/grafic_sensori{count_user}.png")
         }
     )
 
 
 @app.route('/start-script', methods=['POST'])
 def start_script()-> None:
+    """ Ruteaza la pagina de start a scriptului
+    Aceasta pagina porneste scriptul de pe Raspberry Pi pentru a citi datele de la senzori in fundal.
+    """
+    app_service.delete_all_graphics()  # Sterge toate graficele anterioare la fiecare accesare a paginii de start a scriptului
     try:
-        filename = 'grafic_raspi.png'
+        filename = f'grafic_raspi{count_user}.png'
         os.path.join(current_app.root_path, 'static', 'grafic_sensors', filename)
         app_service.start_script()  
 
         return jsonify({
             "status": "success",
-            "img": url_for('static', filename=f'grafic_sensors/{filename}')
+            "img": url_for('static', filename=f'grafic_sensors/{filename}'),
+            'count_user': count_user
         })
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
@@ -76,6 +87,7 @@ def stop_script()-> None:
     """
     Ruteaza la pagina de oprire a scriptului
     """
+    app_service.delete_all_graphics()  # Sterge toate graficele anterioare la fiecare accesare a paginii de oprire a scriptului
     app_service.stop_script()
     return jsonify(
         {

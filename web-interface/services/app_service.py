@@ -28,6 +28,7 @@ class AppService:
         self.list_pres: list[float] = list()
         self.thread: threading.Thread | None = None
         self.stop_event: threading.Event = threading.Event()
+        self.count_user: int = 0
 
 
     def start_script(self) -> None:
@@ -113,7 +114,7 @@ class AppService:
             fontweight='bold', 
             y=1,
             )
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric' , 'grafic_sensori.png')
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric' , f'grafic_sensori{self.count_user}.png')
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)
@@ -157,10 +158,27 @@ class AppService:
         # fig.legend(loc='upper right')
         
         plt.tight_layout(rect=[0, 0, 1, 0.90])
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , f"grafic_raspi{self.count_user}.png")
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)
         plt.close(fig)
+    
+    def delete_all_graphics(self) -> None:
+        """
+        Sterge toate graficele generate.
+        """
+        static_path: str = os.path.join(current_app.root_path, 'static')
+        folders: list[str] = [
+            'grafic_sensors',
+            'grafic_istoric'
+        ]    
+        for folder in folders:
+            folder_path: str = os.path.join(static_path, folder)
+            for filename in os.listdir(folder_path):
+                file_path: str = os.path.join(folder_path, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+        
         
        

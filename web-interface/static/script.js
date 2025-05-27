@@ -6,7 +6,8 @@ const istoric_container = document.getElementById("istoric-container");
 const script_container = document.getElementById("script-container");
 const img_senzor = document.getElementById("senzori-img");
 const img = document.getElementById("grafic-img");
-let intervalId = null;
+let intervalId = null; // pt refresh grafic la fiecare 3 secunde
+var count_user = 0; // numără câte click-uri a făcut utilizatorul
 
 
 
@@ -46,7 +47,7 @@ function loadIstoric() {
         .catch(error => console.error("Eroare la preluarea zilelor:", error));
 }
 
-function loadOre() {
+async function loadOre() {
     const ziua1 = document.getElementById("ziua1").value;
     const oraSelect1 = document.getElementById("ora1");
     oraSelect1.innerHTML = "<option>Se incarca...</option>";
@@ -58,7 +59,7 @@ function loadOre() {
     // Daca ziua1 este selectata, interogheaza serverul pentru orele disponibile
 
     if (ziua1) {
-        fetch(`/ore/${encodeURIComponent(ziua1)}`)
+        await fetch(`/ore/${encodeURIComponent(ziua1)}`)
             .then(response => {
                 if (!response.ok) throw new Error("Eroare raspuns server");
                 return response.json();
@@ -80,7 +81,7 @@ function loadOre() {
 
     // La fel pentru ziua2
     if (ziua2) {
-        fetch(`/ore/${encodeURIComponent(ziua2)}`)
+        await fetch(`/ore/${encodeURIComponent(ziua2)}`)
             .then(response => {
                 if (!response.ok) throw new Error("Eroare raspuns server");
                 return response.json();
@@ -101,13 +102,13 @@ function loadOre() {
     }
 }
 
-function afisareGrafic() {
+async function afisareGrafic() {
     const zi1 = document.getElementById("ziua1").value;
     const ora1 = document.getElementById("ora1").value;
     const zi2 = document.getElementById("ziua2").value;
     const ora2 = document.getElementById("ora2").value;
 
-    fetch('/afisare-grafic', {
+   await fetch('/afisare-grafic', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -153,6 +154,7 @@ async function startScript(){
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
+            count_user = data.count_user;
             if (!intervalId) {
                     intervalId = setInterval(actualizeazaGrafic, 3000);
                 }
@@ -168,7 +170,7 @@ async function startScript(){
 function actualizeazaGrafic() {
     img_senzor.style.display = "block"; // afișează imaginea senzorului
     const timestamp = new Date().getTime(); // forțează browserul să reîncarce
-    img_senzor.src = `/static/grafic_sensors/grafic_raspi.png?t=${timestamp}`;
+    img_senzor.src = `/static/grafic_sensors/grafic_raspi${count_user}.png?t=${timestamp}`;
 }
 
 
