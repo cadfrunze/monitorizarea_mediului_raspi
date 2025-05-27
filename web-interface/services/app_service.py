@@ -28,6 +28,7 @@ class AppService:
         self.list_pres: list[float] = list()
         self.thread: threading.Thread | None = None
         self.stop_event: threading.Event = threading.Event()
+        self.list_count_user: list[int] = list()
         self.count_user: int = 0
 
 
@@ -114,7 +115,7 @@ class AppService:
             fontweight='bold', 
             y=1,
             )
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric' , f'grafic_sensori{self.count_user}.png')
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric' , f'grafic_sensori{self.list_count_user[self.count_user - 1]}.png')
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)
@@ -158,7 +159,7 @@ class AppService:
         # fig.legend(loc='upper right')
         
         plt.tight_layout(rect=[0, 0, 1, 0.90])
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , f"grafic_raspi{self.count_user}.png")
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , f"grafic_raspi{self.list_count_user[self.count_user - 1]}.png")
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)
