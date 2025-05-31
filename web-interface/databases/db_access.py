@@ -1,49 +1,42 @@
 import os
 from dotenv import load_dotenv
-import mariadb
+import firebase_admin
+from firebase_admin import credentials, db
 from databases.found_ip import IpRaspi
 
 
 class DbAccess:
     """
-    Clasa DbAccess este responsabila pentru conectarea la baza de date MariaDB (Raspbery Pi) 
-
-    si obtinerea adresei IP/ssid de la Raspberry Pi din clasa IpRaspi (modul found_ip)
+    Clasa DbAccess este responsabila pentru conectarea la baza de date firebase,
+    extragerea datelor din baza de date si
+    obtinerea adresei IP/ssid de la Raspberry Pi din clasa IpRaspi (modul found_ip)
     """
     def __init__(self):
         ip_raspi: IpRaspi = IpRaspi()
         self.__ip: str = ip_raspi.get_ip() #private
-        self.__ssid = ip_raspi.get_ssid() #private
+        self.__ssid: str = ip_raspi.get_ssid() #private
         # incarca virtual env de la .env file
         load_dotenv()
-        self.user: str = os.getenv("USER_DB")
-        self.password: str = os.getenv("PASS_DB")
-        self.database: str = os.getenv("DB_NAME")
-        self.conn: mariadb.Connection = self.connection()
-
-    def connection(self)-> None | mariadb.Connection:
-        """Connect to database"""
-        try:
-            conn = mariadb.connect(
-              user=os.getenv("USER_DB"),
-              password=os.getenv("PASS_DB"),
-              host=self.__ip,
-              database=os.getenv("DB_NAME")
-              )
-        except mariadb.Error as e:
-            raise e
-        else:
-            return conn
+        # initializeaza conexiunea la baza de date firebase
+        self.__CREDENTIALS : str = os.getenv("CREDENTIALS")
+        self.__URL_ADDRESS: str = os.getenv("URL_ADR")
+        self.__END_POINT_DATABASE: str = os.getenv("END_POINT_DATA")
+        self.connection: db.Reference | None = self.connect()
     
-    def enforce_connection(self)->mariadb.Connection:
-        """Reconectarea la baza de date!"""
+    def connect(self) -> db.Reference | None:
+        """
+        Incarca credentialele de la firebase si initializeaza conexiunea la baza de date
+        """
         try:
-            if self.conn is None:
-                self.conn = self.connection()
-            else:
-                self.conn.ping(reconnect=True)
+            cred = credentials.Certificate(self.__CREDENTIALS)
         except Exception as e:
-            self.conn = self.connection()
+            raise e
+        if not firebase_admin._apps:
+            firebase_admin.initialize_app(cred, {
+                'databaseURL': self.__URL_ADDRESS
+            })
+        return db.reference(f"/status/{self.__END_POINT_DATABASE}")
+    
     
     def get_ip(self)->str:
         """Returneaza adresa IP de la Raspberry Pi"""
@@ -53,50 +46,19 @@ class DbAccess:
         """Returneaza SSID-ul de la Raspberry Pi"""
         return self.__ssid
     
-    def fetch_days(self)->None | list:
-        """Citeste/extrageaza zilele din baza de date"""
-        self.enforce_connection()
-        if self.conn is None:
-            raise "Eroare la conectarea la baza de date"
-        with self.conn.cursor() as cursor:
-            cursor.execute("SELECT DISTINCT day FROM sensor_data")
-            rows: list[tuple]  = cursor.fetchall()
-        days: list[str] = [row[0] for row in rows]
-        return days
+    def get_data(self)-> dict | None:
+        """
+        Conecteaza la baza de date si obtine datele de la Raspberry Pi
+        """
+        ref = self.connection
+        if ref is None:
+            raise "Eroare la conectarea la Firebase"
+        data: dict | None = ref.get()
+        return data 
     
-    def fetch_hours(self, day: str)->None | list:
-        """Citeste/extrage intervalul orar din baza de date"""
-        self.enforce_connection()
-        if self.conn is None:
-            raise "Eroare la conectarea la baza de date"
-        with self.conn.cursor() as cursor:
-            cursor.execute("SELECT hour FROM sensor_data WHERE day = ?", (day,))
-            rows: list[tuple]  = cursor.fetchall()
-        hours: list[str] = [row[0] for row in rows]
-        return hours
+# db_access: DbAccess = DbAccess()
+# print(db_access.get_data())  # For testing purposes, prints the data fetched from Firebase
     
-    def fetch_data(self, day1: str, hour1: str, day2:str , hour2: str)->None | dict[list[str], list[str], list[str], list[str]]:
-        """Citeste/extrageaza temp, umiditatea, presiunea aer din baza de date"""
-        self.enforce_connection()
-        if self.conn is None:
-            raise "Eroare la conectarea la baza de date"
-        all_data: dict = dict()
-        with self.conn.cursor() as cursor:
-            cursor.execute("SELECT temperature FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_temp: list[tuple] = cursor.fetchall()
-            cursor.execute("SELECT humidity FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_hum: list[tuple]  = cursor.fetchall()
-            cursor.execute("SELECT pressure FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_pres: list[tuple]  = cursor.fetchall()
-            cursor.execute("SELECT hour FROM sensor_data WHERE day BETWEEN ? AND ? AND hour BETWEEN ? AND ?", (day1, day2, hour1, hour2))
-            rows_hour: list[tuple]  = cursor.fetchall()
-        
-        all_data["temperature"] = [row[0] for row in rows_temp]
-        all_data["humidity"] = [row[0] for row in rows_hum]
-        all_data["pressure"] = [row[0] for row in rows_pres]
-        all_data["hour"] = [row[0] for row in rows_hour]
-        return all_data
-
 
 
 

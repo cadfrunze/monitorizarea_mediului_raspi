@@ -55,7 +55,7 @@ class RaspiSsh:
                 raise ConnectionError("lipa conex ssh")
 
         folder: str = self.__path
-        script: str = "main.py"
+        script: str = "run_script.py"
         venv: str = "source venv/bin/activate"
         command: str = f"cd {folder} && {venv} && python {script}"
         stdin, stdout, stderr = self.client.exec_command(command)
