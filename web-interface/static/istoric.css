@@ -2,19 +2,23 @@
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    color: white !important;
 }
 
 body {
     display: flex;
+    flex-direction: column;
     background: #edecec;
     min-height: 100vh;
     padding: 0 10px;
     align-items: center;
     justify-content: center;
 }
+body, .calendar-container, header, .calendar-body {
+    color: white;
+}
 
 .calendar-container {
+    
     background: #484747;
     width: 320px;                
     border-radius: 10px;
@@ -79,7 +83,7 @@ header .calendar-current-date {
     height: 30px;               
     line-height: 30px;          
     font-size: 0.9rem;          
-    color: #414141;
+    /*color: #414141;*/
     margin-top: 20px;           
     position: relative;
     z-index: 1;
@@ -123,8 +127,8 @@ header .calendar-current-date {
 }
 
 .calendar-dates li.highlight {
-    background: transparent !important;          
-    border: 2px dotted #38f3b1 !important;       
+    background: transparent ;          
+    border: 2px dotted #38f3b1;       
     border-radius: 50%;                           
     position: relative;
     z-index: 10;
@@ -133,3 +137,39 @@ header .calendar-current-date {
     text-align: center;
     width: calc(100% / 7);
 }
+
+.calendar-dates li.highlight {
+  background-color: #6964ff;
+  color: white;
+  border-radius: 50%;
+}
+
+.calendar-dates li.range {
+  background-color: #a3a0ff;
+  color: white;
+  border-radius: 0;
+}
+
+.time-selectors {
+  margin-top: 15px;       /* spațiu deasupra */
+  display: flex;
+  gap: 15px;              /* spațiu între selecturi */
+  justify-content: center; /* centrează pe orizontală */
+  align-items: center;
+  color: black;         /* culoare text (poți schimba) */
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+
+.time-selectors label {
+  margin-right: 5px;
+}
+
+.time-selectors select {
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+

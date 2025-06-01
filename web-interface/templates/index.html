@@ -11,10 +11,10 @@
 
     <div class="button-group">
         <form action="/istoric" method="get">
-            <button type="button" onclick="loadIstoric()">Afiseaza Grafic (baza de date)</button>
+            <button type="submit">Afiseaza Grafic (baza de date)</button>
         </form>
 
-        <button type="button" onclick="loadScript()">Ruleaza script Raspberry Pi</button>
+        <button type="button" onclick="loadScript()">Ruleaza  DEMO script Raspberry Pi</button>
 
         <form action="/adresa" method="get">
             <button type="submit">Adresa web</button>
@@ -24,27 +24,6 @@
             <button type="submit">Router</button>
         </form>
 </div>
-
-    <div id="istoric-container">
-        <div class="istoric-row">
-            <label for="ziua1">Ziua de la:</label>
-            <select name="ziua1" id="ziua1" onchange="loadOre()"></select>
-
-            <label for="ora1">Ora de la:</label>
-            <select name="ora1" id="ora1"></select>
-        </div>
-
-        <div class="istoric-row">
-            <label for="ziua2">Până la ziua:</label>
-            <select name="ziua2" id="ziua2" onchange="loadOre()"></select>
-
-            <label for="ora2">Până la ora:</label>
-            <select name="ora2" id="ora2"></select>
-        </div>
-        <button type="submit" onclick="afisareGrafic()">Afiseaza Grafic</button>
-        
-        
-    </div>
 
     <div id="script-container">
         <button type="submit" onclick="startScript()"> Start Script</button>

@@ -31,7 +31,7 @@ def istoric()-> None:
     Ruteaza la pagina de istoric
     """
     
-    return jsonify(message="ok", status="success")
+    return render_template('istoric.html')
 
 @app.route('/ore/<zi>', methods=['GET'])
 def ore(zi: str)-> None:

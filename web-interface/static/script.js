@@ -16,35 +16,9 @@ var count_user = 0; // numără câte click-uri a făcut utilizatorul
 
 function loadIstoric() {
     fetch('/istoric')
-        .then(response => response.json())
-        .then(zile => {
-            
-            const select = document.getElementById("ziua1");
-            const select2 = document.getElementById("ziua2");
-            // curăță opțiunile existente
-            select.innerHTML = "";
-            select2.innerHTML = "";
-
-            // adaugă fiecare zi în <select>
-            zile.forEach(zi => {
-                const option = document.createElement("option");
-                option.value = zi;
-                option.textContent = zi;
-                select.appendChild(option);
-                const option2 = document.createElement("option");
-                option2.value = zi;
-                option2.textContent = zi;
-                select2.appendChild(option2);
-            });
-
-            // afișează containerul
-            istoric_container.style.display = "block";
-            script_container.style.display = "none"; // ascunde script container
-            img_senzor.style.display = "none";
-            img.style.display = "none";
-            
-        })
-        .catch(error => console.error("Eroare la preluarea zilelor:", error));
+        .then(response => {
+            if (response.ok) {window.location.assign('/istoric.html')}});
+    
 }
 
 async function loadOre() {
