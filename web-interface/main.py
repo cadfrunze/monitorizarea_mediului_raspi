@@ -21,8 +21,7 @@ def index()-> None:
     count_user += 1
     app_service.count_user = count_user  # Adauga numarul de utilizatori la lista
     app_service.list_count_user.append(count_user)  # Adauga numarul de utilizatori la lista
-    print(app_service.count_user)
-    print(app_service.list_count_user)
+    # app_service.get_all_data(21, 9, "31-05-2025", "01-06-2025")
     #app_service.delete_all_graphics()  # Sterge toate graficele anterioare la fiecare accesare a paginii principale
     return render_template('index.html')
 
@@ -31,8 +30,8 @@ def istoric()-> None:
     """
     Ruteaza la pagina de istoric
     """
-    zile: list[str] = app_service.get_days()
-    return jsonify(zile)
+    
+    return jsonify(message="ok", status="success")
 
 @app.route('/ore/<zi>', methods=['GET'])
 def ore(zi: str)-> None:

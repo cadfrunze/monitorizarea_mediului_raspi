@@ -17,7 +17,7 @@ class AppService:
     """
     Clasa AppService este responsabila pentru gestionarea/cerintele aplicatiei.
     """
-    def __init__(self, app: Flask):
+    def __init__(self, app: Flask) -> None:
         self.app = app 
         self.running: bool = False       
         self.__data_raspi: AllData = AllData()
@@ -81,28 +81,37 @@ class AppService:
         """
         Returneaza intervalul de date din baza de date. Afiseaza un grafic cu datele din baza de date
         """
-        all_data: dict = self.__data_raspi.data_range(day1, hour1, day2, hour2)
-        # print(data_raspi)
-        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(all_data["hour"]) * 0.8, 30)), 8))
+        all_data: dict[str, list[tuple[int, float]]] = self.__data_raspi.data_range(day1, hour1, day2, hour2)
+        # Extragerea datelor pentru fiecare senzor
+        data_hours: list[int] = [str(item[0]) for item in all_data["temp"]]
+        data_temp: list[float] = [item[-1] for item in all_data["temp"]]
+        data_hum: list[float] = [item[-1] for item in all_data["hum"]]
+        data_press: list[float] = [item[-1] for item in all_data["press"]]
+
+        fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(data_hours) * 0.8, 30)), 8))
         
         # Grafic pentru temperatura
-        axs[0].plot(all_data["hour"], all_data["temperature"], label="Temperatura", color="red")
+        axs[0].plot(data_hours, data_temp, label="Temperatura", color="red")
+        axs[0].set_xticklabels(data_hours, rotation=45)
+        #axs[0].set_yticks(data_temp)
         axs[0].set_ylabel("Temperatura (°C)")
-        axs[0].set_xlabel("Ora")
+        axs[0].set_xlabel("Intervalul de ore")
         axs[0].set_title("Grafic temperatura")
         axs[0].grid(True)
         axs[0].legend()
         # Grafic pentru umiditate
-        axs[1].plot(all_data["hour"], all_data["humidity"], label="Umiditate", color="blue")
+        axs[1].plot(data_hours, data_hum, label="Umiditate", color="blue")
+        axs[1].set_xticklabels(data_hours, rotation=45)
         axs[1].set_ylabel("Umiditate (%)")
-        axs[1].set_xlabel("Ora")
+        axs[1].set_xlabel("Intervalul de ore")
         axs[1].set_title("Grafic umiditate")
         axs[1].grid(True)
         axs[1].legend()
         # Grafic pentru presiune
-        axs[2].plot(all_data["hour"], all_data["pressure"], label="Presiune", color="green")
+        axs[2].plot(data_hours, data_press, label="Presiune", color="green")
+        axs[2].set_xticklabels(data_hours, rotation=45)
         axs[2].set_ylabel("Presiune (hPa)")
-        axs[2].set_xlabel("Ora")
+        axs[2].set_xlabel("Intervalul de ore")
         axs[2].set_title("Grafic presiune")
         axs[2].grid(True)
         axs[2].legend()

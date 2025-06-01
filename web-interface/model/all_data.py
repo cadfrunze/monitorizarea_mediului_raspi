@@ -48,7 +48,7 @@ class AllData:
         # Obtinerea datelor din baza de date
         for time in interval_time:
             for hour in time[1]: # interatia pt intervalul de ore din ziua curenta
-                for k, v in self.all_data.items(): # vezi k la iterare k va fi "temp", "hum" sau "press"
+                for k, v in self.all_data.items(): # vezi k la iterare k va fi cheia "temp", "hum" sau "press"
                     # print(f"Key: {k}, Value: {v}")
                     for data in v.values():
                         if data["day"] == time[0] and data["hour"] == hour:
