@@ -10,19 +10,13 @@ Acesta contine rutele si logica de baza a aplicatiei.
 
 app : Flask = Flask(__name__)
 app_service: AppService = AppService(app)
-count_user: int = 0
+
 
 @app.route('/')
 def index()-> None:
     """
     Ruteaza la pagina principala
     """
-    global count_user
-    count_user += 1
-    app_service.count_user = count_user  # Adauga numarul de utilizatori la lista
-    app_service.list_count_user.append(count_user)  # Adauga numarul de utilizatori la lista
-    # app_service.get_all_data(21, 9, "31-05-2025", "01-06-2025")
-    #app_service.delete_all_graphics()  # Sterge toate graficele anterioare la fiecare accesare a paginii principale
     return render_template('index.html')
 
 @app.route('/istoric', methods=['GET'])
@@ -32,6 +26,35 @@ def istoric()-> None:
     """
     
     return render_template('istoric.html')
+
+@app.route('/istoric/grafic', methods=['POST'])
+def istoric_grafic():
+    data = request.get_json()
+
+    start_date = data.get('startDate')
+    ora1 = data.get('ora1')
+    end_date = data.get('endDate')
+    ora2 = data.get('ora2')
+
+    if not all([start_date, ora1, end_date, ora2]):
+        return jsonify({
+            "status": "error",
+            "message": "Date incomplete primite."
+        }), 400
+
+    # Exemplu apel funcție generare grafic (înlocuiește cu implementarea ta)
+    ora1 = int(ora1)
+    ora2 = int(ora2)
+    app_service.get_all_data(start_date, ora1, end_date, ora2)
+
+    # Exemplu generare nume fișier grafic (înlocuiește cu logica ta)
+    img_filename = f"grafic_istoric/grafic_sensori.png"
+
+    return jsonify({
+        "status": "success",
+        "message": "Graficul a fost generat cu succes.",
+        "img": url_for('static', filename=img_filename)
+    })
 
 @app.route('/ore/<zi>', methods=['GET'])
 def ore(zi: str)-> None:

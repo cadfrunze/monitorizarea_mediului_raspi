@@ -14,7 +14,7 @@ class AllData:
     
     def data_range(self, start_hour:int, end_hour:int, ziua1: str, ziua2:str) -> dict | None:
         """
-        Returneaza intervalul de date din baza de date.
+        Returneaza intervalul de ore, date: temp, umidiate, presiune din date din baza de date.
         """
         
         if self.all_data is None:
@@ -34,9 +34,9 @@ class AllData:
             interval_time.append([current_date.strftime("%d-%m-%Y")])
             current_date += timedelta(days=1)
         # Obtinerea intervalului de ore
-        if len(interval_time) == 1:
-            interval_hours = [ora for ora in range(start_hour, end_hour + 1)]
-            interval_time.append(interval_hours)
+        if ziua1 == ziua2:
+            interval_time[0].append([ora for ora in range(start_hour, end_hour + 1)])
+            
         else:
             for day in interval_time:
                 if day == interval_time[0]:

@@ -28,8 +28,8 @@ class AppService:
         self.list_pres: list[float] = list()
         self.thread: threading.Thread | None = None
         self.stop_event: threading.Event = threading.Event()
-        self.list_count_user: list[int] = list()
-        self.count_user: int = 0
+        # self.list_count_user: list[int] = list()
+        # self.count_user: int = 0
 
 
     def start_script(self) -> None:
@@ -81,54 +81,68 @@ class AppService:
         """
         Returneaza intervalul de date din baza de date. Afiseaza un grafic cu datele din baza de date
         """
-        all_data: dict[str, list[tuple[int, float]]] = self.__data_raspi.data_range(day1, hour1, day2, hour2)
+        all_data: dict[str, list[tuple[int, float]]] = self.__data_raspi.data_range(hour1, hour2, day1, day2)
         # Extragerea datelor pentru fiecare senzor
-        data_hours: list[int] = [str(item[0]) for item in all_data["temp"]]
-        data_temp: list[float] = [item[-1] for item in all_data["temp"]]
-        data_hum: list[float] = [item[-1] for item in all_data["hum"]]
-        data_press: list[float] = [item[-1] for item in all_data["press"]]
+        data_hours: list[int] = [item[0] for item in all_data["temp"]]   # itereaza prin toate datele si extrage orele
+        data_temp: list[float] = [item[-1] for item in all_data["temp"]] # extrage temperatura pentru fiecare ora
+        data_hum: list[float] = [item[-1] for item in all_data["hum"]]   # extrage umiditatea pentru fiecare ora
+        data_press: list[float] = [item[-1] for item in all_data["press"]] # extrage presiunea pentru fiecare ora
+
+        # print(f"data_hours = {data_hours}")
+        # print(f"data_temp = {data_temp}")
+        # print(f"data_hum = {data_hum}")
+        # print(f"data_press = {data_press}")
 
         fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(data_hours) * 0.8, 30)), 8))
-        
+
+        # Constructia axei x pe pozitii sumerice (0, 1, 2, ...)
+        x: range[int] = range(len(data_hours))
+        # Etichetele vor fi orele convertite în string pt a fi afișate pe axa x
+        labels: list[str] = [str(h) for h in data_hours]
+
         # Grafic pentru temperatura
-        axs[0].plot(data_hours, data_temp, label="Temperatura", color="red")
-        axs[0].set_xticklabels(data_hours, rotation=45)
-        #axs[0].set_yticks(data_temp)
+        axs[0].plot(x, data_temp, label="Temperatura", color="red")
+        axs[0].set_xticks(x)
+        axs[0].set_xticklabels(labels, rotation=45)
         axs[0].set_ylabel("Temperatura (°C)")
         axs[0].set_xlabel("Intervalul de ore")
         axs[0].set_title("Grafic temperatura")
         axs[0].grid(True)
         axs[0].legend()
+
         # Grafic pentru umiditate
-        axs[1].plot(data_hours, data_hum, label="Umiditate", color="blue")
-        axs[1].set_xticklabels(data_hours, rotation=45)
+        axs[1].plot(x, data_hum, label="Umiditate", color="blue")
+        axs[1].set_xticks(x)
+        axs[1].set_xticklabels(labels, rotation=45)
         axs[1].set_ylabel("Umiditate (%)")
         axs[1].set_xlabel("Intervalul de ore")
         axs[1].set_title("Grafic umiditate")
         axs[1].grid(True)
         axs[1].legend()
+
         # Grafic pentru presiune
-        axs[2].plot(data_hours, data_press, label="Presiune", color="green")
-        axs[2].set_xticklabels(data_hours, rotation=45)
+        axs[2].plot(x, data_press, label="Presiune", color="green")
+        axs[2].set_xticks(x)
+        axs[2].set_xticklabels(labels, rotation=45)
         axs[2].set_ylabel("Presiune (hPa)")
         axs[2].set_xlabel("Intervalul de ore")
         axs[2].set_title("Grafic presiune")
         axs[2].grid(True)
         axs[2].legend()
-        # fig.legend(loc='upper right')
-        
+
+        # ajustarea aspectului graficului
         plt.tight_layout(rect=[0, 0, 1, 0.90])
         fig.suptitle(
             t=f"{day1} ora {hour1} - {day2} ora {hour2}",
-            fontsize=16, 
-            fontweight='bold', 
+            fontsize=16,
+            fontweight='bold',
             y=1,
-            )
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric' , f'grafic_sensori{self.list_count_user[self.count_user - 1]}.png')
+        )
+        # Salveaza graficul in directorul static al aplicatiei Flask
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric', 'grafic_sensori.png')
         plt.savefig(static_path, dpi=300)
-        # print("Grafic salvat:", os.path.exists(path))
-        # print("Cale fișier:", path)
         plt.close(fig)
+
     
     def get_data_raspi(self) -> None:
         """
@@ -168,7 +182,7 @@ class AppService:
         # fig.legend(loc='upper right')
         
         plt.tight_layout(rect=[0, 0, 1, 0.90])
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , f"grafic_raspi{self.list_count_user[self.count_user - 1]}.png")
+        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
         plt.savefig(static_path, dpi=300)
         # print("Grafic salvat:", os.path.exists(path))
         # print("Cale fișier:", path)

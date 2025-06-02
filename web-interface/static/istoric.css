@@ -172,4 +172,20 @@ header .calendar-current-date {
   font-size: 0.9rem;
   cursor: pointer;
 }
+#submit-button{
+    background-color: green;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+#grafic-img {
+
+    max-width: 80%;
+    width: fit-content;
+    margin-top: 15px;
+    display: none;
+}
 
