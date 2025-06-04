@@ -13,7 +13,9 @@ def get_info_raspi() -> dict[str, str]:
     """
     db: DbAccess = DbAccess()
     info: dict[str, str] = dict()
-    info["ip"] = db.get_ip()
+    ip: str = db.get_ip()
+    ip = ip.split(" ")
+    info["ip"] = ip[0]
     info["ssid"] = db.get_ssid()
     return info
 

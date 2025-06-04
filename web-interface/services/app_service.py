@@ -62,20 +62,6 @@ class AppService:
             while self.running:
                 self.get_data_raspi()
                 time.sleep(2)
-        
-
-
-    def get_days(self) -> list[str]:
-        """
-        Returneaza lista de zile din baza de date.
-        """
-        return self.__data_raspi.days()
-    
-    def get_hours(self, day: str) -> list[str]:
-        """
-        Returneaza lista de ore pentru o zi data.
-        """
-        return self.__data_raspi.hours(day)
     
     def get_all_data(self, day1: str, hour1: str, day2: str, hour2: str) -> None:
         """
@@ -84,7 +70,7 @@ class AppService:
         all_data: dict[str, list[tuple[int, float]]] = self.__data_raspi.data_range(hour1, hour2, day1, day2)
         # Extragerea datelor pentru fiecare senzor
         data_hours: list[int] = [item[0] for item in all_data["temp"]]   # itereaza prin toate datele si extrage orele
-        data_temp: list[float] = [item[-1] for item in all_data["temp"]] # extrage temperatura pentru fiecare ora
+        data_temp: list[float] = [round(item[-1], 1) for item in all_data["temp"]] # extrage temperatura pentru fiecare ora
         data_hum: list[float] = [item[-1] for item in all_data["hum"]]   # extrage umiditatea pentru fiecare ora
         data_press: list[float] = [item[-1] for item in all_data["press"]] # extrage presiunea pentru fiecare ora
 
@@ -96,13 +82,13 @@ class AppService:
         fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(data_hours) * 0.8, 30)), 8))
 
         # Constructia axei x pe pozitii sumerice (0, 1, 2, ...)
-        x: range[int] = range(len(data_hours))
+        axa_x: range[int] = range(len(data_hours))
         # Etichetele vor fi orele convertite în string pt a fi afișate pe axa x
         labels: list[str] = [str(h) for h in data_hours]
 
         # Grafic pentru temperatura
-        axs[0].plot(x, data_temp, label="Temperatura", color="red")
-        axs[0].set_xticks(x)
+        axs[0].plot(axa_x, data_temp, label="Temperatura", color="red")
+        axs[0].set_xticks(axa_x)
         axs[0].set_xticklabels(labels, rotation=45)
         axs[0].set_ylabel("Temperatura (°C)")
         axs[0].set_xlabel("Intervalul de ore")
@@ -111,20 +97,20 @@ class AppService:
         axs[0].legend()
 
         # Grafic pentru umiditate
-        axs[1].plot(x, data_hum, label="Umiditate", color="blue")
-        axs[1].set_xticks(x)
+        axs[1].plot(axa_x, data_hum, label="Umiditate PH", color="blue")
+        axs[1].set_xticks(axa_x)
         axs[1].set_xticklabels(labels, rotation=45)
-        axs[1].set_ylabel("Umiditate (%)")
+        axs[1].set_ylabel("Umiditate PH (%)")
         axs[1].set_xlabel("Intervalul de ore")
         axs[1].set_title("Grafic umiditate")
         axs[1].grid(True)
         axs[1].legend()
 
         # Grafic pentru presiune
-        axs[2].plot(x, data_press, label="Presiune", color="green")
-        axs[2].set_xticks(x)
+        axs[2].plot(axa_x, data_press, label="Presiune Atm.", color="green")
+        axs[2].set_xticks(axa_x)
         axs[2].set_xticklabels(labels, rotation=45)
-        axs[2].set_ylabel("Presiune (hPa)")
+        axs[2].set_ylabel("Presiune Atm. (hPa)")
         axs[2].set_xlabel("Intervalul de ore")
         axs[2].set_title("Grafic presiune")
         axs[2].grid(True)
@@ -153,28 +139,35 @@ class AppService:
         except Exception as e:
             raise Exception(f"Eroare la rularea scriptului de pe Raspberry Pi: {e}")
         self.list_hours.append(data_raspi["hour"])
-        self.list_temp.append(data_raspi["temperature"])
-        self.list_hum.append(data_raspi["humidity"])
-        self.list_pres.append(data_raspi["pressure"])
+        self.list_temp.append(str(round(float(data_raspi["temp"]), 1)))
+        self.list_hum.append(data_raspi["hum"])
+        self.list_pres.append(data_raspi["press"])
+        axa_x : range[int] = range(len(self.list_hours))
         fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(self.list_hours) * 0.8, 30)), 8))
         
         # Grafic pentru temperatura
         axs[0].plot(self.list_hours, self.list_temp, label="Temperatura", color="red")
+        axs[0].set_xticks(axa_x)
+        axs[0].set_xticklabels(self.list_hours, rotation=45)
         axs[0].set_ylabel("Temperatura (°C)")
         axs[0].set_xlabel("Ora")
         axs[0].set_title("Grafic temperatura")
         axs[0].grid(True)
         axs[0].legend()
         # Grafic pentru umiditate
-        axs[1].plot(self.list_hours, self.list_hum, label="Umiditate", color="blue")
-        axs[1].set_ylabel("Umiditate (%)")
+        axs[1].plot(self.list_hours, self.list_hum, label="Umiditate PH", color="blue")
+        axs[1].set_xticks(axa_x)
+        axs[1].set_xticklabels(self.list_hours, rotation=45)
+        axs[1].set_ylabel("Umiditate PH (%)")
         axs[1].set_xlabel("Ora")
         axs[1].set_title("Grafic umiditate")
         axs[1].grid(True)
         axs[1].legend()
         # Grafic pentru presiune
-        axs[2].plot(self.list_hours, self.list_pres, label="Presiune", color="green")
-        axs[2].set_ylabel("Presiune (hPa)")
+        axs[2].plot(self.list_hours, self.list_pres, label="Presiune Atm.", color="green")
+        axs[2].set_xticks(axa_x)
+        axs[2].set_xticklabels(self.list_hours, rotation=45)
+        axs[2].set_ylabel("Presiune Atm. (hPa)")
         axs[2].set_xlabel("Ora")
         axs[2].set_title("Grafic presiune")
         axs[2].grid(True)
@@ -184,25 +177,23 @@ class AppService:
         plt.tight_layout(rect=[0, 0, 1, 0.90])
         static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
         plt.savefig(static_path, dpi=300)
-        # print("Grafic salvat:", os.path.exists(path))
-        # print("Cale fișier:", path)
         plt.close(fig)
     
-    def delete_all_graphics(self) -> None:
-        """
-        Sterge toate graficele generate.
-        """
-        static_path: str = os.path.join(current_app.root_path, 'static')
-        folders: list[str] = [
-            'grafic_sensors',
-            'grafic_istoric'
-        ]    
-        for folder in folders:
-            folder_path: str = os.path.join(static_path, folder)
-            for filename in os.listdir(folder_path):
-                file_path: str = os.path.join(folder_path, filename)
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
+    # def delete_all_graphics(self) -> None:
+    #     """
+    #     Sterge toate graficele generate.
+    #     """
+    #     static_path: str = os.path.join(current_app.root_path, 'static')
+    #     folders: list[str] = [
+    #         'grafic_sensors',
+    #         'grafic_istoric'
+    #     ]    
+    #     for folder in folders:
+    #         folder_path: str = os.path.join(static_path, folder)
+    #         for filename in os.listdir(folder_path):
+    #             file_path: str = os.path.join(folder_path, filename)
+    #             if os.path.isfile(file_path):
+    #                 os.remove(file_path)
         
         
        

@@ -1,7 +1,7 @@
 from databases.db_access import DbAccess
 from datetime import datetime, timedelta
 
-db: DbAccess = DbAccess()
+data_base: DbAccess = DbAccess()
 
 class AllData:
     """
@@ -9,7 +9,7 @@ class AllData:
     """
     def __init__(self):
 
-        self.all_data: dict = db.get_data()
+        self.all_data: dict = data_base.get_data()
     
     
     def data_range(self, start_hour:int, end_hour:int, ziua1: str, ziua2:str) -> dict | None:
@@ -26,7 +26,7 @@ class AllData:
             "press": [],
             }
         interval_time: list[list[str, list[int]]] = list() # index[0] = ziua, index[1] = intervalul de ore
-        interval_hours: list[int] = list()
+        #interval_hours: list[int] = list()
         start_date: datetime = datetime.strptime(ziua1, "%d-%m-%Y")
         end_date: datetime = datetime.strptime(ziua2, "%d-%m-%Y")
         current_date: datetime = start_date
