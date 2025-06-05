@@ -24,5 +24,7 @@
 # raspi: RaspiSsh = RaspiSsh()
 
 # raspi.run_script()
+from databases.db_access import DbAccess
 
-print(type(int))
+data_base: DbAccess = DbAccess()
+print(data_base.get_data())

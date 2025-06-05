@@ -4,3 +4,10 @@ web-interface/databases/.env
 web-interface/databases/cadfrunze-raspi-firebase-adminsdk-fbsvc-c9ccd27771.json
 web-interface/databases/__pycache__/found_ip.cpython-313.pyc
 web-interface/model/.env
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/databases/__pycache__/db_access.cpython-313.pyc
+*.pyc
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/static/grafic_istoric/grafic_sensori.png
