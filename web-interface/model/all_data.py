@@ -25,7 +25,7 @@ class AllData:
             "hum": [],
             "press": [],
             }
-        interval_time: list[list[str, list[int | float]]] = list() # index[0] = ziua, index[1] = intervalul de ore
+        interval_time: list[list[str, list[int]]] = list() # index[0] = ziua, index[1] = intervalul de ore
         #interval_hours: list[int] = list()
         start_date: datetime = datetime.strptime(ziua1, "%d-%m-%Y")
         end_date: datetime = datetime.strptime(ziua2, "%d-%m-%Y")
@@ -47,7 +47,7 @@ class AllData:
                     day.append([ora for ora in range(0, end_hour + 1)])
         # Obtinerea datelor din baza de date
         for time in interval_time:
-            for hour in time[1]: # interatia pt intervalul de ore din ziua curenta
+            for hour in time[1]: # interatia pt intervalul de ore din ziua curenta variabila time din prima iterare
                 for k, v in self.all_data.items(): # vezi k la iterare k va fi cheia "temp", "hum" sau "press"
                     # print(f"Key: {k}, Value: {v}")
                     for data in v.values():

@@ -69,7 +69,7 @@ class AppService:
         """
         all_data: dict[str, list[tuple[int, float]]] = self.__data_raspi.data_range(hour1, hour2, day1, day2)
         # Extragerea datelor pentru fiecare senzor
-        data_hours: list[int] = [item[0] for item in all_data["temp"]]   # itereaza prin toate datele si extrage orele
+        data_hours: list[int] = [item[0] for item in all_data["temp"]]   # itereaza prin toate tupleurile si extrage orele din temp
         data_temp: list[float] = [round(item[-1], 1) for item in all_data["temp"]] # extrage temperatura pentru fiecare ora
         data_hum: list[float] = [item[-1] for item in all_data["hum"]]   # extrage umiditatea pentru fiecare ora
         data_press: list[float] = [item[-1] for item in all_data["press"]] # extrage presiunea pentru fiecare ora
