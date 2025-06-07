@@ -21,7 +21,7 @@ class AppService:
         self.app = app 
         self.running: bool = False       
         self.__data_raspi: AllData = AllData()
-        #self.raspi_ssh: RaspiSsh = RaspiSsh()
+        self.raspi_ssh: RaspiSsh = RaspiSsh()
         self.list_hours: list[str] = list()
         self.list_temp: list[float] = list()
         self.list_hum: list[float] = list()
