@@ -25,7 +25,7 @@ class AllData:
             "hum": [],
             "press": [],
             }
-        interval_time: list[list[str, list[int]]] = list() # index[0] = ziua, index[1] = intervalul de ore
+        interval_time: list[list[str, list[int | float]]] = list() # index[0] = ziua, index[1] = intervalul de ore
         #interval_hours: list[int] = list()
         start_date: datetime = datetime.strptime(ziua1, "%d-%m-%Y")
         end_date: datetime = datetime.strptime(ziua2, "%d-%m-%Y")
