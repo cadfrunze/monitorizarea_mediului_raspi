@@ -26,3 +26,5 @@ web-interface/services/__pycache__/app_service.cpython-313.pyc
 *.pyc
 *.pyc
 *.pyc
+raspi-data-base_sensors/post_raspi/data.py
+raspi-data-base_sensors/.env

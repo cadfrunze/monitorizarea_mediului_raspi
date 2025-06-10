@@ -1,0 +1,5 @@
+sudo lsof -i :5000
+sudo kill 12345
+sudo kill -9 12345
+htop
+pkill -f vscode-server
