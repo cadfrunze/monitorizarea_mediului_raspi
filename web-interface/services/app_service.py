@@ -200,9 +200,8 @@ class AppService:
         qr.add_data(stringul)
         qr.make(fit=True)
 
-        img = qr.make_image(fill_color="black", back_color="white")
-        
-        qr_buffer = BytesIO()
+        img = qr.make_image(fill_color="black", back_color="white")        
+        qr_buffer: BytesIO = BytesIO()
         img.save(qr_buffer, format="PNG")
         qr_buffer.seek(0)
         
@@ -214,8 +213,8 @@ class AppService:
         Returneaza adresa web a aplicatiei Flask.
         """
         
-        hostname = socket.gethostname()
-        local_ip = socket.gethostbyname(hostname)
+        hostname: str = socket.gethostname()
+        local_ip:str = socket.gethostbyname(hostname)
         self.make_qrcode(f"http://{local_ip}:5000")
 
     
