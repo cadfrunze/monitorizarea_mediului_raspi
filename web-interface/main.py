@@ -16,7 +16,8 @@ app_service: AppService = AppService(app)
 def index()-> None:
     """
     Ruteaza la pagina principala
-    """ 
+    """
+    app_service.web_adress()
     return render_template('index.html')
 
 @app.route('/istoric', methods=['GET'])

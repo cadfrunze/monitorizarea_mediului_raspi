@@ -8,6 +8,12 @@ import matplotlib.pyplot as plt
 import os
 from flask import current_app, Flask
 import threading #pt a rula scriptul in background
+# Constructie a codului QR
+from qrcode import QRCode
+from qrcode.constants import ERROR_CORRECT_L
+from PIL import Image
+from io import BytesIO
+import socket # pentru a obtine adresa IP a dispozitivului local
 
 
 
@@ -178,6 +184,40 @@ class AppService:
         static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
         plt.savefig(static_path, dpi=300)
         plt.close(fig)
+    
+    def make_qrcode(self, stringul: str) -> None:
+        """
+        Genereaza un cod QR pentru un string dat.
+        """
+        
+        
+        qr = QRCode(
+            version=1,
+            error_correction=ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(stringul)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+        
+        qr_buffer = BytesIO()
+        img.save(qr_buffer, format="PNG")
+        qr_buffer.seek(0)
+        
+        static_path: str = os.path.join(current_app.root_path, 'static', 'web_adress', 'qr_code.png')
+        img.save(static_path, format="PNG")
+    
+    def web_adress(self)->None:
+        """
+        Returneaza adresa web a aplicatiei Flask.
+        """
+        
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+        self.make_qrcode(f"http://{local_ip}:5000")
+
     
     # def delete_all_graphics(self) -> None:
     #     """
