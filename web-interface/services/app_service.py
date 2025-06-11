@@ -34,8 +34,7 @@ class AppService:
         self.list_pres: list[float] = list()
         self.thread: threading.Thread | None = None
         self.stop_event: threading.Event = threading.Event()
-        # self.list_count_user: list[int] = list()
-        # self.count_user: int = 0
+        self.ip_local: str = ""
 
 
     def start_script(self) -> None:
@@ -194,8 +193,8 @@ class AppService:
         qr = QRCode(
             version=1,
             error_correction=ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
+            box_size=30,
+            border=1,
         )
         qr.add_data(stringul)
         qr.make(fit=True)
@@ -214,8 +213,11 @@ class AppService:
         """
         
         hostname: str = socket.gethostname()
+        #print(f"Hostname: {hostname}")
         local_ip:str = socket.gethostbyname(hostname)
+        #print(f"Local IP: {local_ip}")
         self.make_qrcode(f"http://{local_ip}:5000")
+        self.ip_local = f"http://{local_ip}:5000"
 
     
     # def delete_all_graphics(self) -> None:

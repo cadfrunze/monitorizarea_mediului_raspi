@@ -4,16 +4,20 @@ obligatoriu
 2. cadfrunze-raspi-firebase-adminsdk-fbsvc-c9ccd27771.json - autentificare firebase (key)
 
 
-------------librarii externe-------------
+------------librarii externe------------- laptop
 
 3. dotenv - pt citire variabile din .env
 
-4. mariadb - client conectare la baza de date
 
-5. firebase-admin - interogare pt ssid si adresa ip de la raspi
+4. firebase-admin - interogare pt ssid si adresa ip de la raspi
 
-6. paramiko - conexiune ssh la raspi
+5. paramiko - conexiune ssh la raspi
 
-7. flask - server afisare web
+6. flask - server afisare web
 
-8. matplotlib - afisare grafica
+7. matplotlib - afisare grafica
+
+8. socket - adresa ip
+
+------------librarii externe------------- laptop
+1. bme680 -senzor integrat Bosch BME680
