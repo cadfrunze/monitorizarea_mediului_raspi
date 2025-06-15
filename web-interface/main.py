@@ -89,6 +89,13 @@ def stop_script()-> None:
         }
     )
 
+@app.route('/adresa', methods=['GET'])
+def adresa()-> None:
+    """
+    1. Afiseaza adresa web a aplicatiei 
+    """
+    return render_template('adresa.html')
+
 
 if __name__ == '__main__':
     """
