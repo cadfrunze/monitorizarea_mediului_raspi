@@ -1,6 +1,5 @@
 import datetime
 import os
-import time
 from data import cred_brut, url_adrr, end_point
 import firebase_admin
 from firebase_admin import db

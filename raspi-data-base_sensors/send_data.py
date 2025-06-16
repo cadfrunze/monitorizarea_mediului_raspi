@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import firebase_admin
 from firebase_admin import db
+from firebase_admin.db import Reference
 from firebase_admin import credentials
 
 
@@ -21,7 +22,7 @@ firebase_admin.initialize_app(cred, {
 
 while True:
     try:
-        ref = db.reference(f"/status/{END_POINT}")
+        ref: Reference = db.reference(f"/status/{END_POINT}")
     except Exception as e:
         time.sleep(3)
         continue
