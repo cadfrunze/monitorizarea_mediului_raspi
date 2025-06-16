@@ -31,3 +31,11 @@ raspi-data-base_sensors/.env
 web-interface/services/__pycache__/app_service.cpython-313.pyc
 web-interface/services/__pycache__/app_service.cpython-313.pyc
 web-interface/services/__pycache__/app_service.cpython-313.pyc
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/databases/__pycache__/db_access.cpython-313.pyc
+web-interface/databases/__pycache__/__init__.cpython-313.pyc
+web-interface/services/__pycache__/app_service.cpython-313.pyc
+web-interface/services/__pycache__/__init__.cpython-313.pyc
+web-interface/model/__pycache__/raspi.cpython-313.pyc
+web-interface/model/__pycache__/__init__.cpython-313.pyc
