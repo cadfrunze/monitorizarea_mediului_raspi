@@ -27,7 +27,7 @@ class AppService:
         self.app = app 
         self.running: bool = False       
         self.__data_raspi: AllData = AllData()
-        #self.raspi_ssh: RaspiSsh = RaspiSsh()
+        self.raspi_ssh: RaspiSsh = RaspiSsh()
         self.list_hours: list[str] = list()
         self.list_temp: list[float] = list()
         self.list_hum: list[float] = list()
@@ -130,7 +130,7 @@ class AppService:
             y=1,
         )
         # Salveaza graficul in directorul static al aplicatiei Flask
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_istoric', 'grafic_sensori.png')
+        static_path: str = os.path.join(self.app.root_path, 'static', 'grafic_istoric', 'grafic_sensori.png')
         plt.savefig(static_path, dpi=300)
         plt.close(fig)
 
@@ -180,7 +180,7 @@ class AppService:
         # fig.legend(loc='upper right')
         
         plt.tight_layout(rect=[0, 0, 1, 0.90])
-        static_path: str = os.path.join(current_app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
+        static_path: str = os.path.join(self.app.root_path, 'static', 'grafic_sensors' , "grafic_raspi.png")
         plt.savefig(static_path, dpi=300)
         plt.close(fig)
     
@@ -204,7 +204,7 @@ class AppService:
         img.save(qr_buffer, format="PNG")
         qr_buffer.seek(0)
         
-        static_path: str = os.path.join(current_app.root_path, 'static', 'web_adress', 'qr_code.png')
+        static_path: str = os.path.join(self.app.root_path, 'static', 'web_adress', 'qr_code.png')
         img.save(static_path, format="PNG")
     
     def web_adress(self)->None:

@@ -17,7 +17,6 @@ def index()-> None:
     """
     Ruteaza la pagina principala
     """
-    app_service.web_adress()
     return render_template('index.html')
 
 @app.route('/istoric', methods=['GET'])
@@ -101,5 +100,5 @@ if __name__ == '__main__':
     """
     Rularea aplicatiei
     """
-     
+    app_service.web_adress() 
     app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
