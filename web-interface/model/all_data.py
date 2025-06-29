@@ -45,7 +45,8 @@ class AllData:
                     day.append([ora for ora in range(0, 24)])
                 elif day == interval_time[-1]:
                     day.append([ora for ora in range(0, end_hour + 1)])
-        # Obtinerea datelor din baza de date
+        # Obtinerea datelor din obiectul all_data (dict)
+        # pentru fiecare zi si ora din intervalul de zile si ore
         for time in interval_time:
             for hour in time[1]: # interatia pt intervalul de ore din ziua curenta variabila time din prima iterare
                 for k, v in self.all_data.items(): # vezi k la iterare k va fi cheia "temp", "hum" sau "press"

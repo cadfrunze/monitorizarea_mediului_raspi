@@ -44,7 +44,7 @@ class IpRaspi:
         """
         ref = self.connect()
         if ref is None:
-            raise "Eroare la conectarea la Firebase"
+            raise ConnectionError("Eroare la conectarea la Firebase")
         ip: str = ref.child("adresa").get()
         return ip
     
@@ -54,7 +54,7 @@ class IpRaspi:
         """
         ref = self.connect()
         if ref is None:
-            raise "Eroare la conectarea la Firebase"
+            raise ConnectionError("Eroare la conectarea la Firebase")
         ssid: str = ref.child("retea").get()
         return ssid
 

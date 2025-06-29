@@ -1,25 +1,32 @@
-# from model.all_data import AllData
-# from services.app_service import AppService
-# from flask import Flask, render_template, request, jsonify, url_for, current_app
-# from model.raspi import get_info_raspi
-# # all_data: AllData = AllData()
-# # print(all_data.data_range(21, 3, "31-05-2025", "01-06-2025"))  # For testing purposes, prints the data range from the database
-# # print(len(all_data.data_range(21, 3, "31-05-2025", "01-06-2025")["temp"]))
-# from model.raspi import RaspiSsh
-# app_service = AppService()
-# app_service.get_all_data(21, 3, "31-05-2025", "01-06-2025")
+import unittest
+from datetime import datetime
+import os
 
 
+class TestFoundIP(unittest.TestCase):
+    def test_connect(self):
+        from databases.found_ip import IpRaspi
+        found_ip = IpRaspi()
+        ref = found_ip.connect()
+        self.assertIsNotNone(ref, "Conexiunea la Firebase ar trebui sa fie stabilita")
 
-# print(type(range(0, 10)))
+    def test_get_ip(self):
+        from databases.found_ip import IpRaspi
+        found_ip = IpRaspi()
+        ip = found_ip.get_ip()
+        self.assertIsInstance(ip, str, "IP address ar trebui sa fie un string")
 
-# help(range)
+    def test_get_ssid(self):
+        from databases.found_ip import IpRaspi
+        found_ip = IpRaspi()
+        ssid = found_ip.get_ssid()
+        self.assertIsInstance(ssid, str, "SSID ar trebuie sa fie un string")
 
-
-
-
-# a = get_info_raspi()
-# print(a["ip"])  # Prints the IP and SSID of the Raspberry Pi
-
-# raspi: RaspiSsh = RaspiSsh()
-
+if __name__ == '__main__':
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(f'{script_dir}\\testing', 'test_found_ip.txt')
+    with open(file_path, 'w') as f:
+        f.write(f"Test pornit la date de: {datetime.now().strftime("%d/%m/%Y")} ora: {datetime.now().strftime("%H:%M:%S")}\n")
+        runner = unittest.TextTestRunner(stream=f, verbosity=2)
+        unittest.TextTestRunner.run = runner.run
+        unittest.main(exit=False)

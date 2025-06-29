@@ -52,7 +52,7 @@ class DbAccess:
         """
         ref = self.connection
         if ref is None:
-            raise "Eroare la conectarea la Firebase"
+            raise ConnectionError("Eroare la conectarea la Firebase")
         data: dict | None = ref.get()
         return data 
     
