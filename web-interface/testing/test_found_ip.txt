@@ -1,9 +1,9 @@
-Test pornit la date de: 29/06/2025 ora: 19:48:04
+Test pornit la date de: 29/06/2025 ora: 22:04:47
 test_connect (__main__.TestFoundIP.test_connect) ... ok
 test_get_ip (__main__.TestFoundIP.test_get_ip) ... ok
 test_get_ssid (__main__.TestFoundIP.test_get_ssid) ... ok
 
 ----------------------------------------------------------------------
-Ran 3 tests in 2.624s
+Ran 3 tests in 2.704s
 
 OK
