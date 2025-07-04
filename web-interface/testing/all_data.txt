@@ -1,0 +1,7 @@
+Test pornit la date de: 05/07/2025 ora: 01:47:39
+test_data_range (__main__.TestAllData.test_data_range) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.379s
+
+OK
