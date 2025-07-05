@@ -27,8 +27,8 @@ class TestAppService(unittest.TestCase):
         self.assertTrue(self.service.ip_local.startswith("http://"), "Adresa IP locală trebuie să fie generată corect.")
 
     def test_get_all_data(self):
-        # Testează metoda get_all_data pentru a verifica daca ruleaza fara erori
-        # Aici presupunem că metoda get_all_data este implementată corect în AppService
+        # Testeaza metoda get_all_data pentru a verifica daca ruleaza fara erori
+        # Aici presupunem că metoda get_all_data este implementata corect în AppService
         # si ca nu ar trebui să arunce exceptii pentru datele valide.
         try:
             self.service.get_all_data("01-06-2025", 0 , "03-06-2025", 23)
