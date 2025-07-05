@@ -68,7 +68,7 @@ class AppService:
                 self.get_data_raspi()
                 time.sleep(2)
     
-    def get_all_data(self, day1: str, hour1: str, day2: str, hour2: str) -> None:
+    def get_all_data(self, day1: str, hour1: int, day2: str, hour2: int) -> None:
         """
         Returneaza intervalul de date din baza de date. Afiseaza un grafic cu datele din baza de date
         """

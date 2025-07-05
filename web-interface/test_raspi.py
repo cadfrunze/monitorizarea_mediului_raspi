@@ -6,13 +6,20 @@ import paramiko
 
 
 class TestRaspiSsh(unittest.TestCase):
+    """Testele pentru clasa RaspiSsh care se ocupa cu conexiunea SSH la Raspberry Pi
+    si rularea scriptului pentru citirea datelor de la senzori."""
     def test_connect(self):
+        """Testeaza conexiunea SSH la Raspberry Pi"""
         from model.raspi import RaspiSsh
         raspissh = RaspiSsh()
         ref = raspissh.connect_raspi()
         self.assertIsInstance(ref, paramiko.SSHClient, "Conexiunea SSH la Raspberry Pi ar trebui sa fie stabilita")
 
     def test_run_script(self):
+        """Testeaza rularea scriptului pe Raspberry Pi si verificarea raspunsului"""
+        # Asigura-te ca ai configurat corect scriptul pe Raspberry Pi si ca acesta returneaza un dictionar cu datele de la senzori
+        # In acest test, presupunem ca scriptul returneaza un dictionar cu cheile 'temp', 'hum' si 'press'
+        # si valorile corespunzatoare pentru temperatura, umiditate si presiune
         from model.raspi import RaspiSsh
         raspissh = RaspiSsh()
         ref = raspissh.run_script()

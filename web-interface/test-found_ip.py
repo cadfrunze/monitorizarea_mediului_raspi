@@ -4,19 +4,23 @@ import os
 
 
 class TestFoundIP(unittest.TestCase):
+    """Testele pentru clasa IpRaspi care se ocupa cu conexiunea la baza de date Firebase"""
     def test_connect(self):
+        """Testeaza conexiunea la baza de date Firebase"""
         from databases.found_ip import IpRaspi
         found_ip = IpRaspi()
         ref = found_ip.connect()
         self.assertIsNotNone(ref, "Conexiunea la Firebase ar trebui sa fie stabilita")
 
     def test_get_ip(self):
+        """Testeaza obtinerea adresei IP din baza de date Firebase"""
         from databases.found_ip import IpRaspi
         found_ip = IpRaspi()
         ip = found_ip.get_ip()
         self.assertIsInstance(ip, str, "IP address ar trebui sa fie un string")
 
     def test_get_ssid(self):
+        """Testeaza obtinerea SSID-ului din baza de date Firebase"""
         from databases.found_ip import IpRaspi
         found_ip = IpRaspi()
         ssid = found_ip.get_ssid()
