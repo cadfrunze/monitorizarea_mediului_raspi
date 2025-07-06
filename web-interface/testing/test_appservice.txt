@@ -1,11 +1,12 @@
-Test pornit la date de: 05/07/2025 ora: 23:56:48
+Test pornit la date de: 06/07/2025 ora: 13:56:59
 test_get_all_data (__main__.TestAppService.test_get_all_data) ... ok
-test_get_all_data_with_mock (__main__.TestAppService.test_get_all_data_with_mock) ... ok
+test_get_all_data_with_mock (__main__.TestAppService.test_get_all_data_with_mock)
+Testeaza metoda get_all_data cu un mock pentru AllData ... ok
 test_make_qrcode (__main__.TestAppService.test_make_qrcode) ... ok
 test_start_and_stop_script (__main__.TestAppService.test_start_and_stop_script) ... ok
 test_web_adress (__main__.TestAppService.test_web_adress) ... ok
 
 ----------------------------------------------------------------------
-Ran 5 tests in 10.854s
+Ran 5 tests in 21.503s
 
 OK

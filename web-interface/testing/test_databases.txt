@@ -1,10 +1,14 @@
-Test pornit la date de: 02/07/2025 ora: 23:11:40
-test_connect (__main__.TestFoundIP.test_connect) ... ok
-test_get_data (__main__.TestFoundIP.test_get_data) ... ok
-test_get_ip (__main__.TestFoundIP.test_get_ip) ... ok
-test_get_ssid (__main__.TestFoundIP.test_get_ssid) ... ok
+Test pornit la date de: 06/07/2025 ora: 12:46:11
+test_connect (__main__.TestDataBase.test_connect)
+Testeaza conexiunea la baza de date Firebase ... ok
+test_get_data (__main__.TestDataBase.test_get_data)
+Testeaza obtinerea datelor din baza de date Firebase ... ok
+test_get_ip (__main__.TestDataBase.test_get_ip)
+Testeaza obtinerea adresei IP din baza de date Firebase ... ok
+test_get_ssid (__main__.TestDataBase.test_get_ssid)
+Testeaza obtinerea SSID-ului din baza de date Firebase ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 2.801s
+Ran 4 tests in 8.075s
 
 OK

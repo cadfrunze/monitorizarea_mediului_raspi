@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 
 
-class TestFoundIP(unittest.TestCase):
+class TestDataBase(unittest.TestCase):
     """Testele pentru clasa DbAccess care se ocupa cu conexiunea la baza de date Firebase"""
     def test_connect(self):
         """Testeaza conexiunea la baza de date Firebase"""
