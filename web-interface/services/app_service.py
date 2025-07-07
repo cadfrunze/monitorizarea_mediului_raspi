@@ -84,6 +84,9 @@ class AppService:
         # print(f"data_hum = {data_hum}")
         # print(f"data_press = {data_press}")
 
+        # Crearea figurii si a axelor pentru grafice
+        # Dimensiunea figurii este adaptata in functie de numarul de ore
+        # Se foloseste o lista de intervale orare pentru a construi axa x
         fig, axs = plt.subplots(3, 1, figsize=(max(8, min(len(data_hours) * 0.8, 30)), 8))
 
         # Constructia axei x pe pozitii sumerice (0, 1, 2, ...)
