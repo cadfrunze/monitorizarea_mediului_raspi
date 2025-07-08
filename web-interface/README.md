@@ -18,6 +18,9 @@ obligatoriu
 7. matplotlib - afisare grafica
 
 8. socket - adresa ip
+9. qr-code
 
-------------librarii externe------------- laptop
+------------librarii externe------------- raspi
 1. bme680 -senzor integrat Bosch BME680
+2. firebase-firebase-admin
+3. dotenv
