@@ -44,3 +44,5 @@ web-interface/databases/__pycache__/__init__.cpython-313.pyc
 web-interface/databases/__pycache__/__init__.cpython-313.pyc
 web-interface/databases/__pycache__/db_access.cpython-313.pyc
 web-interface/model/__pycache__/__init__.cpython-313.pyc
+web-interface/databases/cadfrunze-raspi-aacf99c07bcb.json
+.gitignore
