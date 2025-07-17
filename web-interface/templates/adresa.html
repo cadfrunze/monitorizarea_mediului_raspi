@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<html>
+<head>
     <title>Adresa Web & Router</title>
-    </head>
-    <body>
-        <h1>Adresa Web & Router</h1>
-        
-
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .centerbox {
+            display: flex; flex-direction: column; align-items: center; margin-top: 40px;
+        }
+        .ip { font-size: 2em; margin-bottom: 20px; }
+        .qr-img { margin-top: 10px; width: 270px; }
+    </style>
+</head>
+<body>
+    <div class="centerbox">
+        <div class="ip">
+            Adresa IP a serverului: <br>
+            <strong>{{ adresa }}</strong>
+        </div>
+        <div>
+            <img src="{{ qr_path }}" alt="Cod QR pentru acces rapid" class="qr-img" />
+            <div>Scanează QR-ul pentru acces direct la aplicație</div>
+        </div>
+    </div>
+</body>
 </html>

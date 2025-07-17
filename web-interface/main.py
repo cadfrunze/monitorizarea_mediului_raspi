@@ -88,17 +88,22 @@ def stop_script()-> None:
         }
     )
 
+
 @app.route('/adresa', methods=['GET'])
-def adresa()-> None:
-    """
-    1. Afiseaza adresa web a aplicatiei 
-    """
-    return render_template('adresa.html')
+def adresa():
+    # Actualizează IP-ul și codul QR
+    app_service.web_adress()
+    return render_template(
+        'adresa.html',
+        adresa=app_service.ip_local,             # transmite IP-ul/Link-ul complet
+        qr_path=url_for('static', filename='web_adress/qr_code.png')  # transmite calea spre imaginea QR
+    )
+
 
 
 if __name__ == '__main__':
     """
     Rularea aplicatiei
     """
-    app_service.web_adress() 
+    #app_service.web_adress() 
     app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
